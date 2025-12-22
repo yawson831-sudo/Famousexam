@@ -4,59 +4,54 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Industrial Revolution Online Exam</title>
+
 <style>
   body {
     font-family: 'Segoe UI', sans-serif;
     margin: 0;
     padding: 20px;
-    color: #333;
-    /* Background image */
-    background: url('https://images.unsplash.com/photo-1581091870624-5f9edc2247aa?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+    color: #fff;
+
+    /* INDUSTRIAL WORKSHOP BACKGROUND (OPTION 4) */
+    background: url('https://images.unsplash.com/photo-1576666735065-b24beb27b939?auto=format&fit=crop&w=1600&q=80')
+      no-repeat center center fixed;
     background-size: cover;
+
+    /* Dark overlay for readability */
+    background-color: rgba(0,0,0,0.65);
+    background-blend-mode: darken;
   }
 
-  /* Semi-transparent overlay for readability */
   .page {
     display: none;
     max-width: 800px;
     margin: 20px auto;
-    background: rgba(255, 255, 255, 0.95); /* slightly transparent white */
+    background: rgba(255, 255, 255, 0.95);
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    color: #333;
   }
 
-  .page.active {
-    display: block;
-  }
+  .page.active { display: block; }
 
   h1, h2 {
     text-align: center;
     color: #1a1a1a;
   }
 
-  .question img {
+  img {
     max-width: 100px;
-    margin: 10px 15px 10px 0;
+    height: auto;
+    margin: 10px;
     vertical-align: middle;
-  }
-
-  ul {
-    padding-left: 20px;
-  }
-
-  .answers {
-    margin-top: 15px;
+    border-radius: 6px;
   }
 
   .answers label {
     display: block;
     margin-bottom: 10px;
     cursor: pointer;
-  }
-
-  input[type="radio"] {
-    margin-right: 10px;
   }
 
   button {
@@ -68,16 +63,17 @@
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: background 0.3s;
   }
 
-  button:hover {
-    background: #0056b3;
-  }
+  button:hover { background: #0056b3; }
 
-  .nav-buttons {
+  .nav-buttons { text-align: center; }
+
+  .progress {
     text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #fff;
   }
 
   #result {
@@ -86,128 +82,109 @@
     font-weight: bold;
     color: green;
   }
-
-  .progress {
-    text-align: center;
-    margin-bottom: 15px;
-    font-weight: bold;
-    color: #1a1a1a;
-  }
 </style>
 </head>
+
 <body>
 
-<h1>Industrial Revolution Online Exam</h1>
+<h1 style="color:white;text-align:center;">Industrial Revolution Online Exam</h1>
 <div class="progress">Page <span id="pageNum">1</span> of 5</div>
 
-<!-- Page 1 -->
+<!-- PAGE 1 -->
 <div class="page active">
-  <div class="question">
-    <h2>1. Define the Industrial Revolution</h2>
-    <div class="answers">
-      <label><input type="radio" name="q1" value="1"> Period of major social and technological change</label>
-      <label><input type="radio" name="q1" value="0"> Discovery of America</label>
-      <label><input type="radio" name="q1" value="0"> Start of World War I</label>
-      <label><input type="radio" name="q1" value="0"> Invention of the internet</label>
-    </div>
+  <h2>1. Define the Industrial Revolution</h2>
+  <div class="answers">
+    <label><input type="radio" name="q1" value="1"> Period of major social and technological change</label>
+    <label><input type="radio" name="q1" value="0"> Discovery of America</label>
+    <label><input type="radio" name="q1" value="0"> Start of World War I</label>
+    <label><input type="radio" name="q1" value="0"> Invention of the internet</label>
   </div>
   <div class="nav-buttons">
-    <button onclick="nextPage()">Next &raquo;</button>
+    <button onclick="nextPage()">Next »</button>
   </div>
 </div>
 
-<!-- Page 2 -->
+<!-- PAGE 2 -->
 <div class="page">
-  <div class="question">
-    <h2>2. Where and when did it begin?</h2>
-    <div class="answers">
-      <label><input type="radio" name="q2" value="1"> Great Britain, mid-18th century</label>
-      <label><input type="radio" name="q2" value="0"> France, 17th century</label>
-      <label><input type="radio" name="q2" value="0"> United States, 19th century</label>
-      <label><input type="radio" name="q2" value="0"> Germany, 18th century</label>
-    </div>
+  <h2>2. Where and when did it begin?</h2>
+  <div class="answers">
+    <label><input type="radio" name="q2" value="1"> Great Britain, mid-18th century</label>
+    <label><input type="radio" name="q2" value="0"> France, 17th century</label>
+    <label><input type="radio" name="q2" value="0"> United States, 19th century</label>
+    <label><input type="radio" name="q2" value="0"> Germany, 18th century</label>
   </div>
   <div class="nav-buttons">
-    <button onclick="prevPage()">&laquo; Previous</button>
-    <button onclick="nextPage()">Next &raquo;</button>
+    <button onclick="prevPage()">« Previous</button>
+    <button onclick="nextPage()">Next »</button>
   </div>
 </div>
 
-<!-- Page 3 -->
+<!-- PAGE 3 -->
 <div class="page">
-  <div class="question">
-    <h2>3. Leading countries & flags</h2>
-    <p>Identify the correct flags:</p>
-    <img src="https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" alt="Great Britain Flag">
-    <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="France Flag">
-    <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="United States Flag">
-    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="Germany Flag">
-    <div class="answers">
-      <label><input type="radio" name="q3" value="1"> Great Britain, France, USA, Germany</label>
-      <label><input type="radio" name="q3" value="0"> Germany, France, USA, Great Britain</label>
-      <label><input type="radio" name="q3" value="0"> France, Germany, USA, Italy</label>
-      <label><input type="radio" name="q3" value="0"> USA, Germany, France, Great Britain</label>
-    </div>
+  <h2>3. Leading countries & flags</h2>
+  <img src="https://flagcdn.com/w320/gb.png">
+  <img src="https://flagcdn.com/w320/fr.png">
+  <img src="https://flagcdn.com/w320/us.png">
+  <img src="https://flagcdn.com/w320/de.png">
+
+  <div class="answers">
+    <label><input type="radio" name="q3" value="1"> Great Britain, France, USA, Germany</label>
+    <label><input type="radio" name="q3" value="0"> Germany, France, USA, Great Britain</label>
+    <label><input type="radio" name="q3" value="0"> France, Germany, USA, Italy</label>
+    <label><input type="radio" name="q3" value="0"> USA, Germany, France, Great Britain</label>
   </div>
+
   <div class="nav-buttons">
-    <button onclick="prevPage()">&laquo; Previous</button>
-    <button onclick="nextPage()">Next &raquo;</button>
+    <button onclick="prevPage()">« Previous</button>
+    <button onclick="nextPage()">Next »</button>
   </div>
 </div>
 
-<!-- Page 4 -->
+<!-- PAGE 4 -->
 <div class="page">
-  <div class="question">
-    <h2>4. Four major inventions</h2>
-    <ul>
-      <li><img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Steam_engine_Watt.jpg" alt="Steam Engine"> Steam engine (James Watt)</li>
-      <li><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Spinning_jenny.jpg" alt="Spinning Jenny"> Spinning Jenny (James Hargreaves)</li>
-      <li><img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Power_loom.jpg" alt="Power Loom"> Power loom (Edmund Cartwright)</li>
-      <li><img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Cotton_gin.jpg" alt="Cotton Gin"> Cotton gin (Eli Whitney)</li>
-    </ul>
-    <div class="answers">
-      <label><input type="radio" name="q4" value="1"> Steam engine, Spinning Jenny, Power loom, Cotton gin</label>
-      <label><input type="radio" name="q4" value="0"> Light bulb, Telephone, Steam engine, Cotton gin</label>
-      <label><input type="radio" name="q4" value="0"> Spinning Jenny, Car, Steam engine, Computer</label>
-      <label><input type="radio" name="q4" value="0"> Cotton gin, Power loom, Radio, Internet</label>
-    </div>
+  <h2>4. Four major inventions</h2>
+  <ul>
+    <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Steam_engine_Watt.jpg/320px-Steam_engine_Watt.jpg"> Steam engine</li>
+    <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Spinning_jenny.jpg/320px-Spinning_jenny.jpg"> Spinning Jenny</li>
+    <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Power_loom.jpg/320px-Power_loom.jpg"> Power loom</li>
+    <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Cotton_gin.jpg/320px-Cotton_gin.jpg"> Cotton gin</li>
+  </ul>
+
+  <div class="answers">
+    <label><input type="radio" name="q4" value="1"> Steam engine, Spinning Jenny, Power loom, Cotton gin</label>
+    <label><input type="radio" name="q4" value="0"> Light bulb, Telephone, Steam engine, Cotton gin</label>
+    <label><input type="radio" name="q4" value="0"> Spinning Jenny, Car, Steam engine, Computer</label>
+    <label><input type="radio" name="q4" value="0"> Cotton gin, Power loom, Radio, Internet</label>
   </div>
+
   <div class="nav-buttons">
-    <button onclick="prevPage()">&laquo; Previous</button>
-    <button onclick="nextPage()">Next &raquo;</button>
+    <button onclick="prevPage()">« Previous</button>
+    <button onclick="nextPage()">Next »</button>
   </div>
 </div>
 
-<!-- Page 5 -->
+<!-- PAGE 5 -->
 <div class="page">
-  <div class="question">
-    <h2>5. Impact on Ancient Africa (positives & negatives)</h2>
-    <p><strong>Positives:</strong></p>
-    <ul>
-      <li>Introduced new technologies and trade opportunities.</li>
-      <li>Improved transportation (railways, ships) that boosted commerce.</li>
-    </ul>
-    <p><strong>Negatives:</strong></p>
-    <ul>
-      <li>Exploitation of resources and labor.</li>
-      <li>Disruption of traditional societies and economies.</li>
-    </ul>
-    <div class="answers">
-      <label><input type="radio" name="q5" value="1"> Correct understanding of positives and negatives</label>
-      <label><input type="radio" name="q5" value="0"> Only positives</label>
-      <label><input type="radio" name="q5" value="0"> Only negatives</label>
-      <label><input type="radio" name="q5" value="0"> None of the above</label>
-    </div>
+  <h2>5. Impact on Africa</h2>
+  <p><b>Positives:</b> Technology, trade, transportation</p>
+  <p><b>Negatives:</b> Exploitation, disruption of societies</p>
+
+  <div class="answers">
+    <label><input type="radio" name="q5" value="1"> Correct understanding of positives and negatives</label>
+    <label><input type="radio" name="q5" value="0"> Only positives</label>
+    <label><input type="radio" name="q5" value="0"> Only negatives</label>
+    <label><input type="radio" name="q5" value="0"> None</label>
   </div>
+
   <div class="nav-buttons">
-    <button onclick="prevPage()">&laquo; Previous</button>
+    <button onclick="prevPage()">« Previous</button>
     <button onclick="submitExam()">Submit Exam</button>
   </div>
 </div>
 
-<!-- Result Page -->
+<!-- RESULT -->
 <div class="page" id="resultPage">
-  <h2>Your Exam Result</h2>
+  <h2>Your Result</h2>
   <div id="result"></div>
   <div class="nav-buttons">
     <button onclick="restartExam()">Restart Exam</button>
@@ -218,49 +195,44 @@
 let currentPage = 0;
 const pages = document.querySelectorAll('.page');
 
-function showPage(index) {
-  pages.forEach((page) => page.classList.remove('active'));
-  pages[index].classList.add('active');
+function showPage(i){
+  pages.forEach(p => p.classList.remove('active'));
+  pages[i].classList.add('active');
+  document.getElementById('pageNum').innerText = Math.min(i+1,5);
   window.scrollTo(0,0);
-  document.getElementById('pageNum').innerText = Math.min(index + 1, 5);
 }
 
-function nextPage() {
-  const currentInputs = pages[currentPage].querySelectorAll('input[type="radio"]');
-  const checked = Array.from(currentInputs).some(input => input.checked);
-  if (!checked) {
-    alert('Please select an answer before continuing.');
-    return;
-  }
-  if(currentPage < pages.length - 2) { 
+function nextPage(){
+  const checked = pages[currentPage].querySelector('input:checked');
+  if(!checked){ alert("Please select an answer before continuing."); return; }
+  if(currentPage < pages.length-2){
     currentPage++;
     showPage(currentPage);
   }
 }
 
-function prevPage() {
-  if(currentPage > 0) {
+function prevPage(){
+  if(currentPage > 0){
     currentPage--;
     showPage(currentPage);
   }
 }
 
-function submitExam() {
+function submitExam(){
   let score = 0;
-  const totalQuestions = 5;
-  for(let i = 1; i <= totalQuestions; i++) {
-    const answer = document.querySelector(`input[name="q${i}"]:checked`);
-    if(answer && parseInt(answer.value) === 1) score++;
+  for(let i=1;i<=5;i++){
+    const a = document.querySelector(`input[name="q${i}"]:checked`);
+    if(a && a.value==="1") score++;
   }
-  document.getElementById('result').innerText = `You scored ${score} out of ${totalQuestions}`;
-  currentPage = pages.length - 1;
+  document.getElementById('result').innerText =
+    `You scored ${score}/5 (${Math.round(score/5*100)}%)`;
+  currentPage = pages.length-1;
   showPage(currentPage);
 }
 
-function restartExam() {
+function restartExam(){
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
   currentPage = 0;
-  const radios = document.querySelectorAll('input[type=radio]');
-  radios.forEach(radio => radio.checked = false);
   showPage(currentPage);
 }
 </script>
