@@ -11,13 +11,9 @@
     margin: 0;
     padding: 20px;
     color: #fff;
-
-    /* INDUSTRIAL WORKSHOP BACKGROUND (OPTION 4) */
     background: url('https://images.unsplash.com/photo-1576666735065-b24beb27b939?auto=format&fit=crop&w=1600&q=80')
       no-repeat center center fixed;
     background-size: cover;
-
-    /* Dark overlay for readability */
     background-color: rgba(0,0,0,0.65);
     background-blend-mode: darken;
   }
@@ -35,17 +31,20 @@
 
   .page.active { display: block; }
 
-  h1, h2 {
-    text-align: center;
-    color: #1a1a1a;
-  }
+  h1, h2 { text-align: center; }
 
   img {
-    max-width: 100px;
-    height: auto;
-    margin: 10px;
+    max-width: 120px;
+    border-radius: 8px;
+    margin-right: 10px;
     vertical-align: middle;
-    border-radius: 6px;
+  }
+
+  ul li {
+    list-style: none;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
   }
 
   .answers label {
@@ -121,7 +120,7 @@
 
 <!-- PAGE 3 -->
 <div class="page">
-  <h2>3. Leading countries & flags</h2>
+  <h2>3. Leading countries</h2>
   <img src="https://flagcdn.com/w320/gb.png">
   <img src="https://flagcdn.com/w320/fr.png">
   <img src="https://flagcdn.com/w320/us.png">
@@ -140,14 +139,26 @@
   </div>
 </div>
 
-<!-- PAGE 4 -->
+<!-- PAGE 4 (FIXED IMAGES) -->
 <div class="page">
   <h2>4. Four major inventions</h2>
   <ul>
-    <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Steam_engine_Watt.jpg/320px-Steam_engine_Watt.jpg"> Steam engine</li>
-    <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Spinning_jenny.jpg/320px-Spinning_jenny.jpg"> Spinning Jenny</li>
-    <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Power_loom.jpg/320px-Power_loom.jpg"> Power loom</li>
-    <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Cotton_gin.jpg/320px-Cotton_gin.jpg"> Cotton gin</li>
+    <li>
+      <img src="https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=400&q=80">
+      Steam engine
+    </li>
+    <li>
+      <img src="https://images.unsplash.com/photo-1603988363607-e1e4a66962c8?auto=format&fit=crop&w=400&q=80">
+      Spinning Jenny
+    </li>
+    <li>
+      <img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=400&q=80">
+      Power loom
+    </li>
+    <li>
+      <img src="https://images.unsplash.com/photo-1581092334494-1b6c2b4b9d91?auto=format&fit=crop&w=400&q=80">
+      Cotton gin
+    </li>
   </ul>
 
   <div class="answers">
@@ -166,9 +177,6 @@
 <!-- PAGE 5 -->
 <div class="page">
   <h2>5. Impact on Africa</h2>
-  <p><b>Positives:</b> Technology, trade, transportation</p>
-  <p><b>Negatives:</b> Exploitation, disruption of societies</p>
-
   <div class="answers">
     <label><input type="radio" name="q5" value="1"> Correct understanding of positives and negatives</label>
     <label><input type="radio" name="q5" value="0"> Only positives</label>
