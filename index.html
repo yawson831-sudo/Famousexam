@@ -7,73 +7,98 @@
 <style>
   body {
     font-family: 'Segoe UI', sans-serif;
-    background-color: #f0f2f5;
     margin: 0;
     padding: 20px;
     color: #333;
+    /* Background image */
+    background: url('https://images.unsplash.com/photo-1581091870624-5f9edc2247aa?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+    background-size: cover;
   }
+
+  /* Semi-transparent overlay for readability */
+  .page {
+    display: none;
+    max-width: 800px;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.95); /* slightly transparent white */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  }
+
+  .page.active {
+    display: block;
+  }
+
   h1, h2 {
     text-align: center;
     color: #1a1a1a;
   }
-  .page {
-    display: none;
-    max-width: 800px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-  .page.active {
-    display: block;
-  }
+
   .question img {
     max-width: 100px;
     margin: 10px 15px 10px 0;
     vertical-align: middle;
   }
+
   ul {
     padding-left: 20px;
   }
+
   .answers {
     margin-top: 15px;
   }
+
   .answers label {
     display: block;
     margin-bottom: 10px;
     cursor: pointer;
   }
+
   input[type="radio"] {
     margin-right: 10px;
   }
+
   button {
-    margin: 20px 10px 0 0;
+    margin: 15px 10px 0 0;
     padding: 10px 25px;
     background: #007bff;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background 0.3s;
   }
+
   button:hover {
     background: #0056b3;
   }
+
   .nav-buttons {
     text-align: center;
   }
+
   #result {
     text-align: center;
     font-size: 22px;
     font-weight: bold;
     color: green;
   }
+
+  .progress {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #1a1a1a;
+  }
 </style>
 </head>
 <body>
 
 <h1>Industrial Revolution Online Exam</h1>
+<div class="progress">Page <span id="pageNum">1</span> of 5</div>
 
 <!-- Page 1 -->
 <div class="page active">
@@ -113,10 +138,10 @@
   <div class="question">
     <h2>3. Leading countries & flags</h2>
     <p>Identify the correct flags:</p>
-    <img src="https://share.google/images/CIk4Ehw6CDTEr0dLj" alt="Great Britain Flag">
-    <img src="https://share.google/images/ddkO2rdwpWQsQM3OI" alt="France Flag">
-    <img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.shutterstock.com%2Fimage-photo%2Fus-american-flag-full-frame-260nw-2609455371.jpg&tbnid=fD_TyAmNFeeynM" alt="United States Flag">
-    <img src="https://share.google/images/LPJ8KrtHkrk0E5mbT" alt="Germany Flag">
+    <img src="https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" alt="Great Britain Flag">
+    <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="France Flag">
+    <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="United States Flag">
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="Germany Flag">
     <div class="answers">
       <label><input type="radio" name="q3" value="1"> Great Britain, France, USA, Germany</label>
       <label><input type="radio" name="q3" value="0"> Germany, France, USA, Great Britain</label>
@@ -135,10 +160,10 @@
   <div class="question">
     <h2>4. Four major inventions</h2>
     <ul>
-      <li><img src="https://share.google/images/qRR0jAy924bkw7lTp" alt="Steam Engine"> Steam engine (James Watt)</li>
-      <li><img src="https://share.google/images/EqkuNLX7NBGkNJBeI" alt="Spinning Jenny"> Spinning Jenny (James Hargreaves)</li>
-      <li><img src="https://share.google/images/SBLNDLFJSYu4UFNuC" alt="Power Loom"> Power loom (Edmund Cartwright)</li>
-      <li><img src="https://share.google/images/qSXQk2BSDsMEJRBjn" alt="Cotton Gin"> Cotton gin (Eli Whitney)</li>
+      <li><img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Steam_engine_Watt.jpg" alt="Steam Engine"> Steam engine (James Watt)</li>
+      <li><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Spinning_jenny.jpg" alt="Spinning Jenny"> Spinning Jenny (James Hargreaves)</li>
+      <li><img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Power_loom.jpg" alt="Power Loom"> Power loom (Edmund Cartwright)</li>
+      <li><img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Cotton_gin.jpg" alt="Cotton Gin"> Cotton gin (Eli Whitney)</li>
     </ul>
     <div class="answers">
       <label><input type="radio" name="q4" value="1"> Steam engine, Spinning Jenny, Power loom, Cotton gin</label>
@@ -194,12 +219,20 @@ let currentPage = 0;
 const pages = document.querySelectorAll('.page');
 
 function showPage(index) {
-  pages.forEach((page, i) => page.classList.remove('active'));
+  pages.forEach((page) => page.classList.remove('active'));
   pages[index].classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('pageNum').innerText = Math.min(index + 1, 5);
 }
 
 function nextPage() {
-  if(currentPage < pages.length - 2) { // leave last page for result
+  const currentInputs = pages[currentPage].querySelectorAll('input[type="radio"]');
+  const checked = Array.from(currentInputs).some(input => input.checked);
+  if (!checked) {
+    alert('Please select an answer before continuing.');
+    return;
+  }
+  if(currentPage < pages.length - 2) { 
     currentPage++;
     showPage(currentPage);
   }
@@ -220,13 +253,12 @@ function submitExam() {
     if(answer && parseInt(answer.value) === 1) score++;
   }
   document.getElementById('result').innerText = `You scored ${score} out of ${totalQuestions}`;
-  currentPage = pages.length - 1; // show result page
+  currentPage = pages.length - 1;
   showPage(currentPage);
 }
 
 function restartExam() {
   currentPage = 0;
-  // Clear all selected answers
   const radios = document.querySelectorAll('input[type=radio]');
   radios.forEach(radio => radio.checked = false);
   showPage(currentPage);
