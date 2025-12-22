@@ -1,248 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Industrial Revolution Online Exam</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Examination & Result Portal</title>
+    <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-<style>
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 20px;
-    color: #fff;
-    background: url('https://images.unsplash.com/photo-1576666735065-b24beb27b939?auto=format&fit=crop&w=1600&q=80')
-      no-repeat center center fixed;
-    background-size: cover;
-    background-color: rgba(0,0,0,0.65);
-    background-blend-mode: darken;
-  }
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
 
-  .page {
-    display: none;
-    max-width: 800px;
-    margin: 20px auto;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-    color: #333;
-  }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e293b);
+            background-size: 400% 400%;
+            animation: gradient 12s ease infinite;
+            margin: 0; padding: 20px; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+        }
 
-  .page.active { display: block; }
+        .container {
+            max-width: 850px; width: 100%;
+            background: var(--glass);
+            padding: 40px; border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
 
-  h1, h2 { text-align: center; }
+        .card { text-align: center; padding: 10px; }
+        
+        input, textarea {
+            width: 100%; padding: 14px; margin: 12px 0;
+            border: 2px solid #e2e8f0; border-radius: 12px;
+            box-sizing: border-box; font-size: 1rem; transition: 0.3s;
+        }
 
-  img {
-    max-width: 120px;
-    border-radius: 8px;
-    margin-right: 10px;
-    vertical-align: middle;
-  }
+        input:focus { border-color: var(--primary); outline: none; }
 
-  ul li {
-    list-style: none;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-  }
+        .btn {
+            background: var(--primary); color: white;
+            padding: 16px 30px; border: none; border-radius: 12px;
+            cursor: pointer; font-weight: bold; width: 100%;
+            font-size: 1rem; transition: 0.3s; margin-top: 10px;
+        }
 
-  .answers label {
-    display: block;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
+        .btn-result { background: #10b981; margin-top: 15px; }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-  button {
-    margin: 15px 10px 0 0;
-    padding: 10px 25px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-  }
+        .hidden { display: none; }
+        
+        .section { 
+            background: white; padding: 25px; border-radius: 15px; 
+            margin-bottom: 25px; border-left: 6px solid var(--primary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
 
-  button:hover { background: #0056b3; }
-
-  .nav-buttons { text-align: center; }
-
-  .progress {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #fff;
-  }
-
-  #result {
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    color: green;
-  }
-</style>
+        .q-img { width: 100%; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
+        .flag-container { display: flex; gap: 8px; justify-content: center; margin: 15px 0; }
+        .flag-container img { width: 65px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        
+        #display-name { color: var(--primary); margin-bottom: 5px; }
+    </style>
 </head>
-
 <body>
 
-<h1 style="color:white;text-align:center;">Industrial Revolution Online Exam</h1>
-<div class="progress">Page <span id="pageNum">1</span> of 5</div>
+<div class="container">
+    
+    <div id="step-1" class="card">
+        <h1 style="color: var(--primary); margin-bottom: 10px;">Academic Portal</h1>
+        <p>Enter your assigned Index Number to proceed.</p>
+        <input type="text" id="index-check" placeholder="Index Number (e.g., 202501)">
+        <button class="btn" onclick="validateIndex()">Start Examination</button>
+        <button class="btn btn-result" onclick="showResultSearch()">Check Results</button>
+    </div>
 
-<!-- PAGE 1 -->
-<div class="page active">
-  <h2>1. Define the Industrial Revolution</h2>
-  <div class="answers">
-    <label><input type="radio" name="q1" value="1"> Period of major social and technological change</label>
-    <label><input type="radio" name="q1" value="0"> Discovery of America</label>
-    <label><input type="radio" name="q1" value="0"> Start of World War I</label>
-    <label><input type="radio" name="q1" value="0"> Invention of the internet</label>
-  </div>
-  <div class="nav-buttons">
-    <button onclick="nextPage()">Next »</button>
-  </div>
-</div>
+    <div id="step-2" class="card hidden">
+        <h2>Identity Verification</h2>
+        <p>Index <span id="verified-idx" style="font-weight: bold; color: green;"></span> Verified!</p>
+        <input type="text" id="student-name-input" placeholder="Full Student Name">
+        <input type="text" id="student-class-input" placeholder="Class / Grade Level">
+        <button class="btn" onclick="startExam()">Enter Exam Hall</button>
+    </div>
 
-<!-- PAGE 2 -->
-<div class="page">
-  <h2>2. Where and when did it begin?</h2>
-  <div class="answers">
-    <label><input type="radio" name="q2" value="1"> Great Britain, mid-18th century</label>
-    <label><input type="radio" name="q2" value="0"> France, 17th century</label>
-    <label><input type="radio" name="q2" value="0"> United States, 19th century</label>
-    <label><input type="radio" name="q2" value="0"> Germany, 18th century</label>
-  </div>
-  <div class="nav-buttons">
-    <button onclick="prevPage()">« Previous</button>
-    <button onclick="nextPage()">Next »</button>
-  </div>
-</div>
+    <div id="step-3" class="hidden">
+        <form action="https://formspree.io/f/yawson831@gmail.com" method="POST">
+            <input type="hidden" name="Index" id="hidden-index">
+            <input type="hidden" name="Name" id="hidden-name">
+            <input type="hidden" name="Class" id="hidden-class">
 
-<!-- PAGE 3 -->
-<div class="page">
-  <h2>3. Leading countries</h2>
-  <img src="https://flagcdn.com/w320/gb.png">
-  <img src="https://flagcdn.com/w320/fr.png">
-  <img src="https://flagcdn.com/w320/us.png">
-  <img src="https://flagcdn.com/w320/de.png">
+            <div style="text-align: center;">
+                <h2 id="display-name">Exam Paper</h2>
+                <p>Industrial Revolution History Assessment</p>
+                <hr style="opacity: 0.2; margin: 20px 0;">
+            </div>
 
-  <div class="answers">
-    <label><input type="radio" name="q3" value="1"> Great Britain, France, USA, Germany</label>
-    <label><input type="radio" name="q3" value="0"> Germany, France, USA, Great Britain</label>
-    <label><input type="radio" name="q3" value="0"> France, Germany, USA, Italy</label>
-    <label><input type="radio" name="q3" value="0"> USA, Germany, France, Great Britain</label>
-  </div>
+            <div class="section">
+                <h3>1. Definition</h3>
+                <p>Define the Industrial Revolution and its significance.</p>
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800" class="q-img">
+                <textarea name="Q1_Definition" required placeholder="Type your definition here..."></textarea>
+            </div>
 
-  <div class="nav-buttons">
-    <button onclick="prevPage()">« Previous</button>
-    <button onclick="nextPage()">Next »</button>
-  </div>
-</div>
+            <div class="section">
+                <h3>2. Leading Countries</h3>
+                <p>Identify these four nations (GB, France, USA, Germany):</p>
+                <div class="flag-container">
+                    <img src="https://flagcdn.com/w160/gb.png">
+                    <img src="https://flagcdn.com/w160/fr.png">
+                    <img src="https://flagcdn.com/w160/us.png">
+                    <img src="https://flagcdn.com/w160/de.png">
+                </div>
+                <input type="text" name="Q2_Countries" placeholder="List the 4 countries...">
+            </div>
 
-<!-- PAGE 4 (FIXED IMAGES) -->
-<div class="page">
-  <h2>4. Four major inventions</h2>
-  <ul>
-    <li>
-      <img src="https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=400&q=80">
-      Steam engine
-    </li>
-    <li>
-      <img src="https://images.unsplash.com/photo-1603988363607-e1e4a66962c8?auto=format&fit=crop&w=400&q=80">
-      Spinning Jenny
-    </li>
-    <li>
-      <img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=400&q=80">
-      Power loom
-    </li>
-    <li>
-      <img src="https://images.unsplash.com/photo-1581092334494-1b6c2b4b9d91?auto=format&fit=crop&w=400&q=80">
-      Cotton gin
-    </li>
-  </ul>
+            <div class="section">
+                <h3>3. Global Impact</h3>
+                <p>Briefly discuss one positive and one negative impact of industrialization on Africa.</p>
+                <textarea name="Q3_Africa_Impact" placeholder="Positive: ... Negative: ..."></textarea>
+            </div>
 
-  <div class="answers">
-    <label><input type="radio" name="q4" value="1"> Steam engine, Spinning Jenny, Power loom, Cotton gin</label>
-    <label><input type="radio" name="q4" value="0"> Light bulb, Telephone, Steam engine, Cotton gin</label>
-    <label><input type="radio" name="q4" value="0"> Spinning Jenny, Car, Steam engine, Computer</label>
-    <label><input type="radio" name="q4" value="0"> Cotton gin, Power loom, Radio, Internet</label>
-  </div>
+            <button type="submit" class="btn" style="background: #dc2626;">Final Submission</button>
+        </form>
+    </div>
 
-  <div class="nav-buttons">
-    <button onclick="prevPage()">« Previous</button>
-    <button onclick="nextPage()">Next »</button>
-  </div>
-</div>
+    <div id="result-portal" class="card hidden">
+        <h2>Result Checker</h2>
+        <div id="result-box" style="padding: 20px; background: #f1f5f9; border-radius: 15px; margin: 20px 0; font-size: 1.2rem;">
+            </div>
+        <button class="btn" onclick="location.reload()">Back to Home</button>
+    </div>
 
-<!-- PAGE 5 -->
-<div class="page">
-  <h2>5. Impact on Africa</h2>
-  <div class="answers">
-    <label><input type="radio" name="q5" value="1"> Correct understanding of positives and negatives</label>
-    <label><input type="radio" name="q5" value="0"> Only positives</label>
-    <label><input type="radio" name="q5" value="0"> Only negatives</label>
-    <label><input type="radio" name="q5" value="0"> None</label>
-  </div>
-
-  <div class="nav-buttons">
-    <button onclick="prevPage()">« Previous</button>
-    <button onclick="submitExam()">Submit Exam</button>
-  </div>
-</div>
-
-<!-- RESULT -->
-<div class="page" id="resultPage">
-  <h2>Your Result</h2>
-  <div id="result"></div>
-  <div class="nav-buttons">
-    <button onclick="restartExam()">Restart Exam</button>
-  </div>
 </div>
 
 <script>
-let currentPage = 0;
-const pages = document.querySelectorAll('.page');
+    // 1. Authorized List (15 Index Numbers)
+    const authorizedIndexes = [
+        "202501", "202502", "202503", "202504", "202505",
+        "202506", "202507", "202508", "202509", "202510",
+        "202511", "202512", "202513", "202514", "202515"
+    ];
 
-function showPage(i){
-  pages.forEach(p => p.classList.remove('active'));
-  pages[i].classList.add('active');
-  document.getElementById('pageNum').innerText = Math.min(i+1,5);
-  window.scrollTo(0,0);
-}
+    // 2. Marks Database (Teacher updates this after grading)
+    const grades = {
+        "202501": "Score: 88% | Grade: A",
+        "202502": "Score: Pending | Check back later",
+        "202503": "Score: 72% | Grade: B"
+    };
 
-function nextPage(){
-  const checked = pages[currentPage].querySelector('input:checked');
-  if(!checked){ alert("Please select an answer before continuing."); return; }
-  if(currentPage < pages.length-2){
-    currentPage++;
-    showPage(currentPage);
-  }
-}
+    let tempIdx = "";
 
-function prevPage(){
-  if(currentPage > 0){
-    currentPage--;
-    showPage(currentPage);
-  }
-}
+    function validateIndex() {
+        const val = document.getElementById('index-check').value.trim();
+        if (authorizedIndexes.includes(val)) {
+            tempIdx = val;
+            document.getElementById('verified-idx').innerText = val;
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('hidden');
+        } else {
+            alert("Invalid Index! Access Denied.");
+        }
+    }
 
-function submitExam(){
-  let score = 0;
-  for(let i=1;i<=5;i++){
-    const a = document.querySelector(`input[name="q${i}"]:checked`);
-    if(a && a.value==="1") score++;
-  }
-  document.getElementById('result').innerText =
-    `You scored ${score}/5 (${Math.round(score/5*100)}%)`;
-  currentPage = pages.length-1;
-  showPage(currentPage);
-}
+    function startExam() {
+        const n = document.getElementById('student-name-input').value.trim();
+        const c = document.getElementById('student-class-input').value.trim();
+        if(n && c) {
+            document.getElementById('hidden-index').value = tempIdx;
+            document.getElementById('hidden-name').value = n;
+            document.getElementById('hidden-class').value = c;
+            document.getElementById('display-name').innerText = "Paper for " + n;
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-3').classList.remove('hidden');
+        } else {
+            alert("Please provide your name and class.");
+        }
+    }
 
-function restartExam(){
-  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
-  currentPage = 0;
-  showPage(currentPage);
-}
+    function showResultSearch() {
+        const val = document.getElementById('index-check').value.trim();
+        if (!val) { alert("Please enter your index number first."); return; }
+        
+        if (authorizedIndexes.includes(val)) {
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('result-portal').classList.remove('hidden');
+            const res = grades[val] || "No result uploaded yet for this Index.";
+            document.getElementById('result-box').innerHTML = `<strong>Index: ${val}</strong><br><br>${res}`;
+        } else {
+            alert("Index not found.");
+        }
+    }
 </script>
 
 </body>
