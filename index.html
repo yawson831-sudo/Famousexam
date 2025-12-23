@@ -6,14 +6,76 @@
     <title>Academic Examination Portal</title>
     <style>
         @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        :root { --primary: #2563eb; --success: #10b981; --glass: rgba(255, 255, 255, 0.98); }
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81); background-size: 400% 400%; animation: gradient 12s ease infinite; margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .container { max-width: 850px; width: 100%; background: var(--glass); padding: 40px; border-radius: 25px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        
+        :root { 
+            --primary: #2563eb; 
+            --success: #10b981; 
+            --glass: rgba(255, 255, 255, 0.92); 
+        }
+
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; padding: 20px; 
+            min-height: 100vh; 
+            display: flex; justify-content: center; align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Blurred Background Image */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://raw.githubusercontent.com/Genius-831/Image-Host/main/Screenshot_20251222-161148.jpg'), #0f172a;
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.4);
+            z-index: -1;
+        }
+
+        .container { 
+            max-width: 850px; width: 100%; 
+            background: var(--glass); 
+            padding: 40px; border-radius: 25px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); 
+            backdrop-filter: blur(10px);
+        }
+
         .hidden { display: none; }
-        .section { background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 6px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        input, textarea { width: 100%; padding: 14px; margin: 12px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-size: 1rem; }
-        .btn { background: var(--primary); color: white; padding: 16px 30px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem; transition: 0.3s; }
+
+        .section { 
+            background: white; padding: 25px; 
+            border-radius: 15px; margin-bottom: 25px; 
+            border-left: 6px solid var(--primary); 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+        }
+
+        input, textarea { 
+            width: 100%; padding: 14px; margin: 12px 0; 
+            border: 2px solid #e2e8f0; border-radius: 12px; 
+            box-sizing: border-box; font-size: 1rem; 
+        }
+
+        .btn { 
+            background: var(--primary); color: white; 
+            padding: 16px 30px; border: none; border-radius: 12px; 
+            cursor: pointer; font-weight: bold; width: 100%; 
+            font-size: 1rem; transition: 0.3s; 
+        }
+
         .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        
+        /* Hacker Profile Image Style */
+        .profile-img {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            margin: 0 auto 15px;
+            display: block;
+            object-fit: cover;
+        }
+
         .q-img { width: 100%; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
         .result-header { text-align: center; color: var(--primary); }
         .score-display { font-size: 3.5rem; font-weight: bold; color: var(--success); margin: 10px 0; }
@@ -24,6 +86,7 @@
 <div class="container">
     
     <div id="step-1">
+        <img src="https://raw.githubusercontent.com/Genius-831/Image-Host/main/Screenshot_20251222-161148.jpg" class="profile-img" alt="Portal Icon">
         <h1 style="text-align: center; color: var(--primary); margin-top:0;">Academic Portal</h1>
         <p style="text-align: center;">Welcome. Please enter your authorized Index Number.</p>
         <input type="text" id="index-check" placeholder="Index Number (e.g., 202501)">
@@ -41,6 +104,7 @@
         <form id="exam-form" action="https://formspree.io/f/mbdrpzdj" method="POST">
             <input type="hidden" name="Index" id="h-index">
             <input type="hidden" name="Name" id="h-name">
+            <input type="hidden" name="Class" id="h-class">
             <input type="hidden" name="Grade_Result" id="h-score">
             
             <div style="text-align: center;">
@@ -59,7 +123,7 @@
             <div class="section">
                 <h3>2. Major Nations (30 Marks)</h3>
                 <p>Which four major countries were the leaders of the Industrial Revolution?</p>
-                <input type="text" name="Q2_Countries" id="q2" required placeholder="List the countries here...">
+                <input type="text" name="Q2_Countries" id="q2" required placeholder="List the 4 countries here...">
             </div>
 
             <div class="section">
@@ -68,7 +132,7 @@
                 <textarea name="Q3_Africa_Impact" id="q3" required placeholder="Describe the impacts..."></textarea>
             </div>
 
-            <button type="submit" class="btn" style="background: #e11d48;">Submit Final Script</button>
+            <button type="submit" class="btn" id="submit-btn" style="background: #e11d48;">Submit Final Script</button>
         </form>
     </div>
 
@@ -89,8 +153,13 @@
 </div>
 
 <script>
-    const authorizedIndexes = ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510"];
-    let studentData = { index: "", name: "" };
+    const authorizedIndexes = [
+        "202501", "202502", "202503", "202504", "202505", 
+        "202506", "202507", "202508", "202509", "202510",
+        "202511", "202512", "202513", "202514", "202515"
+    ];
+
+    let studentData = { index: "", name: "", class: "" };
 
     function validateIndex() {
         const val = document.getElementById('index-check').value.trim();
@@ -103,33 +172,33 @@
 
     function startExam() {
         const name = document.getElementById('student-name').value.trim();
-        if(name) {
+        const sClass = document.getElementById('student-class').value.trim();
+        if(name && sClass) {
             studentData.name = name;
+            studentData.class = sClass;
             document.getElementById('display-name').innerText = "Candidate: " + name;
             document.getElementById('step-2').classList.add('hidden');
             document.getElementById('step-3').classList.remove('hidden');
-        } else { alert("Please enter your name to proceed."); }
+        } else { alert("Please enter both your name and class."); }
     }
 
     const form = document.getElementById('exam-form');
     form.onsubmit = async (e) => {
         e.preventDefault();
 
-        // --- LENIENT AUTO-MARKING LOGIC ---
         let finalPoints = 0;
         const q1Val = document.getElementById('q1').value.toLowerCase();
         const q2Val = document.getElementById('q2').value.toLowerCase();
         const q3Val = document.getElementById('q3').value.toLowerCase();
 
-        // Q1: Definition (Generous Keyword Check)
+        // Q1 Logic
         const q1Keywords = ['machine', 'factory', 'steam', 'production', 'industry', 'technology', 'growth', 'change', 'transition'];
         let q1Hits = 0;
         q1Keywords.forEach(word => { if(q1Val.includes(word)) q1Hits++; });
-        // If they hit 3 keywords, they get full 40 marks. If 2, they get 30.
-        if(q1Hits >= 3) finalPoints += 40;
+        if(q1Hits >= 2) finalPoints += 40;
         else if(q1Hits >= 1) finalPoints += 25;
 
-        // Q2: Countries (Flexible Names)
+        // Q2 Logic
         const countryGroups = [
             ['britain', 'uk', 'united kingdom', 'england'],
             ['france'],
@@ -140,41 +209,35 @@
             if(group.some(name => q2Val.includes(name))) finalPoints += 7.5;
         });
 
-        // Q3: Impact (Effort-Based Marking)
-        if(q3Val.length > 60) finalPoints += 30; // Detailed answer
-        else if(q3Val.length > 20) finalPoints += 15; // Short answer
-        else if(q3Val.length > 5) finalPoints += 5; // Minimal effort
+        // Q3 Logic
+        if(q3Val.length > 50) finalPoints += 30;
+        else if(q3Val.length > 15) finalPoints += 15;
 
         const finalScore = Math.min(Math.round(finalPoints), 100);
         
-        // Data Prep
         document.getElementById('h-index').value = studentData.index;
         document.getElementById('h-name').value = studentData.name;
+        document.getElementById('h-class').value = studentData.class;
         document.getElementById('h-score').value = finalScore + "%";
 
-        // Button State
-        const subBtn = form.querySelector('button');
+        const subBtn = document.getElementById('submit-btn');
         subBtn.innerText = "Processing Results...";
         subBtn.disabled = true;
 
-        // AJAX Submission to Formspree
         try {
             await fetch(form.action, {
                 method: 'POST',
                 body: new FormData(form),
                 headers: { 'Accept': 'application/json' }
             });
-        } catch (err) {
-            console.log("Submission error, showing result anyway.");
-        }
+        } catch (err) { console.log("Formspree handled."); }
 
-        // Show Final Result
         document.getElementById('step-3').classList.add('hidden');
         document.getElementById('step-4').classList.remove('hidden');
         document.getElementById('res-name').innerText = studentData.name;
         document.getElementById('res-idx').innerText = studentData.index;
         document.getElementById('res-score').innerText = finalScore + "%";
-        document.getElementById('res-status').innerText = finalScore >= 40 ? "STATUS: SATISFACTORY" : "STATUS: NEEDS REVIEW";
+        document.getElementById('res-status').innerText = finalScore >= 40 ? "STATUS: PASSED" : "STATUS: NEEDS REVIEW";
     };
 </script>
 
