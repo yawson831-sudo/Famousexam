@@ -3,258 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Examination Portal</title>
+    <title>Social Quiz - Modern Portal</title>
     <style>
         :root { 
-            --primary-red: #d32f2f; 
-            --bg-dark: #000000;
-            --glass-white: #ffffff;
+            --accent: #3b82f6; 
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --text: #ffffff;
+            --success: #4ade80;
+            --danger: #ef4444;
         }
 
         body { 
-            font-family: Arial, sans-serif;
-            margin: 0; padding: 15px; 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0; padding: 20px; 
             min-height: 100vh; 
-            background-color: var(--bg-dark);
-            display: flex; justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text);
+            display: flex; justify-content: center; align-items: flex-start;
         }
 
-        .bg-blur {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url('https://w0.peakpx.com/wallpaper/218/125/HD-wallpaper-hacker-green-hacker-neon-thumbnail.jpg') no-repeat center center fixed; 
-            background-size: cover;
-            filter: blur(12px) brightness(0.4);
+        .mesh-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
             z-index: -1;
         }
 
         .container { 
-            max-width: 500px; width: 100%; 
-            background: var(--glass-white); 
-            border-radius: 12px; 
+            max-width: 550px; width: 100%; 
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px; 
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-            margin-top: 10px;
-            height: fit-content;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
         }
 
         .header {
-            background: var(--primary-red);
-            color: white;
-            padding: 15px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            font-size: 1.1rem;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .header-icon { margin-right: 12px; font-size: 1.3rem; }
-
-        .step-tag {
-            display: inline-block;
-            background: #f1f3f4;
-            border: 1px solid #e0e0e0;
-            color: #5f6368;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin: 20px 20px 10px;
-            text-transform: uppercase;
+        .header h1 {
+            margin: 0; font-size: 1.5rem; letter-spacing: 1px;
+            background: linear-gradient(to right, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
         }
 
-        .content { padding: 0 20px 20px; }
-        .instr { color: #555; font-size: 0.9rem; margin-bottom: 15px; }
+        .content { padding: 30px; }
 
-        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .step-indicator {
+            font-size: 0.7rem; font-weight: 700; color: #94a3b8;
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 10px; display: block;
+        }
 
         input, textarea { 
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-            background: #fff;
-            width: 100%;
-            box-sizing: border-box;
+            width: 100%; padding: 14px; margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; color: white;
+            font-size: 1rem; box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
-        .btn-red { 
-            background: var(--primary-red);
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.95rem;
-            transition: 0.2s;
+        input:focus, textarea:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        .btn-red:active { transform: scale(0.98); }
+        .btn-modern { 
+            width: 100%; padding: 16px;
+            background: var(--accent);
+            color: white; border: none; border-radius: 12px;
+            font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+            margin-bottom: 10px;
+        }
 
-        .q-box { border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
-        .q-title { font-weight: bold; font-size: 1rem; color: #333; margin-bottom: 5px; }
-        .q-text { font-size: 0.9rem; color: #555; margin-bottom: 10px; line-height: 1.4; }
-        .q-img { width: 100%; border-radius: 8px; margin: 10px 0; border: 1px solid #eee; }
+        .btn-modern:hover { transform: translateY(-2px); background: #2563eb; }
+
+        .q-card { margin-bottom: 30px; }
+        .q-label { font-weight: 600; margin-bottom: 8px; display: block; color: #cbd5e1; }
+        .q-text { font-size: 0.9rem; color: #94a3b8; margin-bottom: 12px; line-height: 1.5; }
+        .q-image { width: 100%; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255, 255, 255, 0.1); }
 
         .hidden { display: none; }
-        .score-box { font-size: 3.5rem; color: #2e7d32; font-weight: bold; margin: 10px 0; }
+        .score-display { text-align: center; padding: 20px; }
+        .score-val { font-size: 5rem; font-weight: 900; margin: 5px 0; }
+        .score-sub { font-size: 1.2rem; color: #94a3b8; font-weight: 600; margin-bottom: 20px; }
+        
+        /* Grade Colors */
+        .grade-a { color: #4ade80; }
+        .grade-b { color: #a855f7; }
+        .grade-c { color: #facc15; }
+        .grade-f { color: #ef4444; }
+
+        /* Print Specific Styling */
+        @media print {
+            body { background: white !important; color: black !important; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; background: white; }
+            .btn-modern, .mesh-bg, .step-indicator, .header { display: none !important; }
+            .score-val { color: black !important; font-size: 3rem; }
+            .content { display: block !important; padding: 0; }
+            .hidden { display: none !important; }
+            #step-5 { display: block !important; }
+        }
     </style>
 </head>
 <body>
 
-<div class="bg-blur"></div>
+<div class="mesh-bg"></div>
 
-<div class="container">
-    <div class="header"><span class="header-icon">⌂</span> Academic Portal</div>
+<div class="container" id="printable-area">
+    <div class="header">
+        <h1>SOCIAL QUIZ</h1>
+    </div>
 
-    <div id="step-1">
-        <div class="step-tag">STEP-1</div>
-        <div class="content">
-            <p class="instr">Welcome. Please enter authorized Index Number.</p>
-            <div class="input-row">
-                <input type="text" id="idx-login" placeholder="Index Number (e.g. 202501)">
-                <button class="btn-red" onclick="validateLogin()">Begin Exam</button>
+    <div id="step-1" class="content">
+        <span class="step-indicator">Gate Access</span>
+        <p style="color: #94a3b8; margin-bottom: 25px;">Enter your unique authorized index number to proceed.</p>
+        <input type="text" id="idx-login" placeholder="Index Number (e.g. 202501)">
+        <button class="btn-modern" onclick="toStep2()">Authorize Access</button>
+    </div>
+
+    <div id="step-2" class="content hidden">
+        <span class="step-indicator">Candidate Profile</span>
+        <input type="text" id="name-input" placeholder="Enter Full Legal Name">
+        <button class="btn-modern" onclick="toStep3()">Begin Session</button>
+    </div>
+
+    <div id="step-3" class="content hidden">
+        <span class="step-indicator">In Session</span>
+        <form id="quiz-form" action="https://formspree.io/f/mbdrpzdj" method="POST">
+            <input type="hidden" name="Index" id="h-idx">
+            <input type="hidden" name="Student" id="h-name">
+            <input type="hidden" name="Final_Grade" id="h-score">
+
+            <div class="q-card">
+                <span class="q-label">01. Period Definition</span>
+                <p class="q-text">Define the Industrial Revolution as a period of major technological change.</p>
+                <textarea name="Q1" id="q1" rows="3" required></textarea>
             </div>
-            <p style="font-size: 0.8rem; font-weight: bold; color: #333;">TOPIC: SOCIAL STUDIES HOMEWORK</p>
-        </div>
-    </div>
 
-    <div id="step-2" class="hidden">
-        <div class="step-tag">CANDIDATE INFO</div>
-        <div class="content">
-            <p class="instr">Please provide your full legal name.</p>
-            <input type="text" id="name-input" placeholder="Full Student Name">
-            <button class="btn-red" style="width:100%; margin-top:15px;" onclick="startExam()">Enter Hall</button>
-        </div>
-    </div>
-
-    <div id="step-3" class="hidden">
-        <div class="step-tag">EXAMINATION</div>
-        <div class="content">
-            <form id="exam-form" action="https://formspree.io/f/mbdrpzdj" method="POST">
-                <input type="hidden" name="Index_Number" id="h-idx">
-                <input type="hidden" name="Student_Name" id="h-name">
-                <input type="hidden" name="Calculated_Grade" id="h-score">
-
-                <div class="q-box">
-                    <div class="q-title">1. Industrial Revolution</div>
-                    <div class="q-text">Define the Industrial Revolution as discussed in your notes.</div>
-                    <textarea name="Q1_Definition" id="q1" rows="3" required></textarea>
-                </div>
-
-                <div class="q-box">
-                    <div class="q-title">2. Origin</div>
-                    <div class="q-text">Where and when did this period begin?</div>
-                    <input type="text" name="Q2_Origin" id="q2" required placeholder="Location and Date">
-                </div>
-
-                <div class="q-box">
-                    <div class="q-title">3. Invention Analysis</div>
-                    <div class="q-text">Identify the machine shown below and name its inventor.</div>
-                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500" class="q-img" alt="Invention">
-                    <input type="text" name="Q3_Invention" id="q3" required placeholder="Machine name & Inventor">
-                </div>
-
-                <div class="q-box">
-                    <div class="q-title">4. Impact on Africa</div>
-                    <div class="q-text">Discuss both the positive and negative impacts on the African continent.</div>
-                    <textarea name="Q4_Africa" id="q4" rows="4" required placeholder="Positives and Negatives..."></textarea>
-                </div>
-
-                <button type="submit" class="btn-red" id="submit-btn" style="width:100%; margin-top:20px;">Upload Script</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="step-4" class="hidden">
-        <div class="step-tag">VERIFICATION</div>
-        <div class="content">
-            <p class="instr">Script uploaded. Re-enter your Index Number to unlock result.</p>
-            <div class="input-row">
-                <input type="text" id="idx-verify" placeholder="Verify Index">
-                <button class="btn-red" onclick="unlockResult()">Unlock</button>
+            <div class="q-card">
+                <span class="q-label">02. Historical Origin</span>
+                <p class="q-text">Where and when did this movement originate?</p>
+                <input type="text" name="Q2" id="q2" required>
             </div>
-        </div>
+
+            <div class="q-card">
+                <span class="q-label">03. Technology Identification</span>
+                <p class="q-text">Name the machine pictured below and identify its inventor.</p>
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500" class="q-image" alt="Steam Engine">
+                <input type="text" name="Q3" id="q3" required placeholder="Machine & Inventor">
+            </div>
+
+            <div class="q-card">
+                <span class="q-label">04. Global Impact</span>
+                <p class="q-text">Discuss the positive and negative impacts this era had on Africa.</p>
+                <textarea name="Q4" id="q4" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn-modern" id="submit-btn">Finalize & Submit</button>
+        </form>
     </div>
 
-    <div id="step-5" class="hidden">
-        <div class="step-tag">CALCULATED SUCCESSFUL</div>
-        <div class="content">
-            <p>Candidate: <strong id="res-name"></strong></p>
-            <p>Index: <span id="res-idx"></span></p>
-            <div class="score-box" id="res-score">0%</div>
-            <p class="instr">The results have been transmitted to the instructor.</p>
-            <button class="btn-red" style="width:100%;" onclick="location.reload()">Return Home</button>
+    <div id="step-4" class="content hidden">
+        <span class="step-indicator">Submission Success</span>
+        <p style="color: #94a3b8; margin-bottom: 25px;">Script received. Verify your index to decrypt your grade.</p>
+        <input type="text" id="idx-verify" placeholder="Re-enter Index">
+        <button class="btn-modern" onclick="showResults()">Unlock Result</button>
+    </div>
+
+    <div id="step-5" class="content hidden">
+        <div class="score-display">
+            <span class="step-indicator">Performance Summary</span>
+            <div id="res-name" style="font-weight: 700; margin-top: 15px; font-size: 1.2rem; color: #cbd5e1;"></div>
+            <div id="res-idx-display" style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 10px;"></div>
+            
+            <div class="score-val" id="res-letter">F</div>
+            <div class="score-sub" id="res-marks">Score: 0%</div>
+            
+            <button class="btn-modern" onclick="window.print()" style="background: #059669;">Download Result PDF</button>
+            <button class="btn-modern" style="background: rgba(255,255,255,0.1);" onclick="location.reload()">Close Portal</button>
         </div>
     </div>
 </div>
 
 <script>
     const ids = ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202513", "202514", "202515"];
-    let session = { idx: "", name: "", pts: "0%" };
+    let session = { idx: "", name: "", pts: "0%", grade: "F" };
 
-    function validateLogin() {
-        let v = document.getElementById('idx-login').value.trim();
-        if(ids.includes(v)) {
-            session.idx = v;
-            document.getElementById('step-1').classList.add('hidden');
-            document.getElementById('step-2').classList.remove('hidden');
-        } else { alert("ACCESS DENIED: Index Number not recognized."); }
+    function calculateGrade(score) {
+        if (score >= 80) return "A";
+        if (score >= 70) return "B";
+        if (score >= 60) return "C";
+        if (score >= 50) return "D";
+        return "F";
     }
 
-    function startExam() {
+    function toStep2() {
+        let v = document.getElementById('idx-login').value.trim();
+        if(!ids.includes(v)) { alert("Invalid Authorization Code"); return; }
+
+        const usedIds = JSON.parse(localStorage.getItem('quiz_submissions') || "[]");
+        if(usedIds.includes(v)) { alert("This index has already been used."); return; }
+
+        session.idx = v;
+        document.getElementById('step-1').classList.add('hidden');
+        document.getElementById('step-2').classList.remove('hidden');
+    }
+
+    function toStep3() {
         let n = document.getElementById('name-input').value.trim();
         if(n) {
             session.name = n;
             document.getElementById('step-2').classList.add('hidden');
             document.getElementById('step-3').classList.remove('hidden');
-        } else { alert("Please enter your name."); }
+        }
     }
 
-    document.getElementById('exam-form').onsubmit = async (e) => {
+    document.getElementById('quiz-form').onsubmit = async (e) => {
         e.preventDefault();
-        
-        // Simple Grading Logic
         let score = 0;
-        if(document.getElementById('q1').value.length > 25) score += 25;
+        if(document.getElementById('q1').value.length > 20) score += 25;
         if(document.getElementById('q2').value.length > 5) score += 25;
         if(document.getElementById('q3').value.length > 5) score += 25;
         if(document.getElementById('q4').value.length > 30) score += 25;
+        
         session.pts = score + "%";
+        session.grade = calculateGrade(score);
 
-        // Map data to hidden fields for Formspree
         document.getElementById('h-idx').value = session.idx;
         document.getElementById('h-name').value = session.name;
-        document.getElementById('h-score').value = session.pts;
+        document.getElementById('h-score').value = `${session.grade} (${session.pts})`;
 
-        const subBtn = document.getElementById('submit-btn');
-        subBtn.innerText = "Transmitting...";
-        subBtn.disabled = true;
+        const btn = document.getElementById('submit-btn');
+        btn.innerText = "Transmitting..."; btn.disabled = true;
 
-        // AJAX Submission to Formspree
         try {
             await fetch(e.target.action, {
                 method: 'POST',
                 body: new FormData(e.target),
                 headers: { 'Accept': 'application/json' }
             });
-        } catch (err) { console.log("Submission noted."); }
-
-        document.getElementById('step-3').classList.add('hidden');
-        document.getElementById('step-4').classList.remove('hidden');
+            const usedIds = JSON.parse(localStorage.getItem('quiz_submissions') || "[]");
+            usedIds.push(session.idx);
+            localStorage.setItem('quiz_submissions', JSON.stringify(usedIds));
+            document.getElementById('step-3').classList.add('hidden');
+            document.getElementById('step-4').classList.remove('hidden');
+        } catch(err) {
+            alert("Connection error. Try again.");
+            btn.innerText = "Finalize & Submit"; btn.disabled = false;
+        }
     };
 
-    function unlockResult() {
-        let v = document.getElementById('idx-verify').value.trim();
-        if(v === session.idx) {
+    function showResults() {
+        if(document.getElementById('idx-verify').value === session.idx) {
             document.getElementById('step-4').classList.add('hidden');
             document.getElementById('step-5').classList.remove('hidden');
+            
             document.getElementById('res-name').innerText = session.name;
-            document.getElementById('res-idx').innerText = session.idx;
-            document.getElementById('res-score').innerText = session.pts;
-        } else { alert("Verification Failed!"); }
+            document.getElementById('res-idx-display').innerText = "ID: " + session.idx;
+            
+            const resLetter = document.getElementById('res-letter');
+            resLetter.innerText = session.grade;
+            document.getElementById('res-marks').innerText = "Final Score: " + session.pts;
+
+            resLetter.className = 'score-val';
+            if(session.grade === 'A') resLetter.classList.add('grade-a');
+            else if(session.grade === 'B') resLetter.classList.add('grade-b');
+            else if(session.grade === 'C') resLetter.classList.add('grade-c');
+            else resLetter.classList.add('grade-f');
+        } else { alert("Verification Failed"); }
     }
 </script>
 </body>
