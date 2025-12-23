@@ -6,18 +6,17 @@
     <title>Academic Examination Portal</title>
     <style>
         :root { 
-            --primary-red: #dc2626; 
-            --bg-gray: #f3f4f6;
-            --text-dark: #1f2937;
-            --glass: rgba(255, 255, 255, 0.98); 
+            --primary-red: #d32f2f; 
+            --bg-dark: #000000;
+            --glass-white: #ffffff;
         }
 
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0; padding: 10px; 
+            font-family: Arial, sans-serif;
+            margin: 0; padding: 15px; 
             min-height: 100vh; 
-            display: flex; justify-content: center; align-items: flex-start;
-            background-color: #000;
+            background-color: var(--bg-dark);
+            display: flex; justify-content: center;
         }
 
         .bg-blur {
@@ -25,57 +24,59 @@
             top: 0; left: 0; right: 0; bottom: 0;
             background: url('https://w0.peakpx.com/wallpaper/218/125/HD-wallpaper-hacker-green-hacker-neon-thumbnail.jpg') no-repeat center center fixed; 
             background-size: cover;
-            filter: blur(15px) brightness(0.3);
+            filter: blur(12px) brightness(0.4);
             z-index: -1;
         }
 
         .container { 
-            max-width: 600px; width: 100%; 
-            background: var(--glass); 
-            padding: 0; border-radius: 12px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
+            max-width: 500px; width: 100%; 
+            background: var(--glass-white); 
+            border-radius: 12px; 
             overflow: hidden;
-            margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            margin-top: 10px;
+            height: fit-content;
         }
 
-        .portal-header {
+        .header {
             background: var(--primary-red);
             color: white;
-            padding: 15px 20px;
+            padding: 15px;
+            font-weight: bold;
             display: flex;
             align-items: center;
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1.1rem;
         }
 
-        .step-label {
-            background: #fff;
-            color: #666;
+        .header-icon { margin-right: 12px; font-size: 1.3rem; }
+
+        .step-tag {
             display: inline-block;
-            padding: 5px 15px;
-            margin: 20px 20px 10px;
+            background: #f1f3f4;
+            border: 1px solid #e0e0e0;
+            color: #5f6368;
+            padding: 4px 12px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
+            margin: 20px 20px 10px;
             text-transform: uppercase;
         }
 
-        .content-body { padding: 0 20px 20px; }
-        .instruction-text { color: #666; font-size: 0.9rem; margin-bottom: 15px; }
+        .content { padding: 0 20px 20px; }
+        .instr { color: #555; font-size: 0.9rem; margin-bottom: 15px; }
 
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
 
         input, textarea { 
             flex: 1;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 1rem;
-            background: #fafafa;
+            background: #fff;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .btn-red { 
@@ -86,17 +87,19 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 0.95rem;
+            transition: 0.2s;
         }
 
+        .btn-red:active { transform: scale(0.98); }
+
+        .q-box { border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
+        .q-title { font-weight: bold; font-size: 1rem; color: #333; margin-bottom: 5px; }
+        .q-text { font-size: 0.9rem; color: #555; margin-bottom: 10px; line-height: 1.4; }
+        .q-img { width: 100%; border-radius: 8px; margin: 10px 0; border: 1px solid #eee; }
+
         .hidden { display: none; }
-        .score-big { font-size: 3rem; color: #10b981; font-weight: bold; }
-        
-        .result-card {
-            background: #fff;
-            border-top: 4px solid var(--primary-red);
-            padding: 20px;
-            margin-top: 20px;
-        }
+        .score-box { font-size: 3.5rem; color: #2e7d32; font-weight: bold; margin: 10px 0; }
     </style>
 </head>
 <body>
@@ -104,117 +107,154 @@
 <div class="bg-blur"></div>
 
 <div class="container">
-    <div class="portal-header"><span>⌂</span> Academic Portal</div>
+    <div class="header"><span class="header-icon">⌂</span> Academic Portal</div>
 
     <div id="step-1">
-        <div class="step-label">Step-1</div>
-        <div class="content-body">
-            <p class="instruction-text">Welcome. Please enter authorized Index Number.</p>
-            <div class="input-group">
-                <input type="text" id="index-check" placeholder="Index Number (202501)">
-                <button class="btn-red" onclick="validateIndex()">Begin Exam</button>
+        <div class="step-tag">STEP-1</div>
+        <div class="content">
+            <p class="instr">Welcome. Please enter authorized Index Number.</p>
+            <div class="input-row">
+                <input type="text" id="idx-login" placeholder="Index Number (e.g. 202501)">
+                <button class="btn-red" onclick="validateLogin()">Begin Exam</button>
             </div>
+            <p style="font-size: 0.8rem; font-weight: bold; color: #333;">TOPIC: SOCIAL STUDIES HOMEWORK</p>
         </div>
     </div>
 
     <div id="step-2" class="hidden">
-        <div class="step-label">Candidate Info</div>
-        <div class="content-body">
-            <input type="text" id="student-name" placeholder="Full Name">
+        <div class="step-tag">CANDIDATE INFO</div>
+        <div class="content">
+            <p class="instr">Please provide your full legal name.</p>
+            <input type="text" id="name-input" placeholder="Full Student Name">
             <button class="btn-red" style="width:100%; margin-top:15px;" onclick="startExam()">Enter Hall</button>
         </div>
     </div>
 
     <div id="step-3" class="hidden">
-        <form id="exam-form" action="https://formspree.io/f/mbdrpzdj" method="POST">
-            <input type="hidden" name="Index" id="h-index">
-            <input type="hidden" name="Name" id="h-name">
-            <input type="hidden" name="Grade" id="h-score">
-            <div class="step-label">Exam in Progress</div>
-            <div class="content-body">
-                <textarea name="Q1" id="q1" placeholder="Answer Q1..." required></textarea>
-                <input type="text" name="Q2" id="q2" placeholder="Answer Q2..." required style="margin-top:10px;">
-                <textarea name="Q3" id="q3" placeholder="Answer Q3..." required style="margin-top:10px;"></textarea>
-                <button type="submit" class="btn-red" style="width:100%; margin-top:20px;">Submit Final Script</button>
-            </div>
-        </form>
+        <div class="step-tag">EXAMINATION</div>
+        <div class="content">
+            <form id="exam-form" action="https://formspree.io/f/mbdrpzdj" method="POST">
+                <input type="hidden" name="Index_Number" id="h-idx">
+                <input type="hidden" name="Student_Name" id="h-name">
+                <input type="hidden" name="Calculated_Grade" id="h-score">
+
+                <div class="q-box">
+                    <div class="q-title">1. Industrial Revolution</div>
+                    <div class="q-text">Define the Industrial Revolution as discussed in your notes.</div>
+                    <textarea name="Q1_Definition" id="q1" rows="3" required></textarea>
+                </div>
+
+                <div class="q-box">
+                    <div class="q-title">2. Origin</div>
+                    <div class="q-text">Where and when did this period begin?</div>
+                    <input type="text" name="Q2_Origin" id="q2" required placeholder="Location and Date">
+                </div>
+
+                <div class="q-box">
+                    <div class="q-title">3. Invention Analysis</div>
+                    <div class="q-text">Identify the machine shown below and name its inventor.</div>
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500" class="q-img" alt="Invention">
+                    <input type="text" name="Q3_Invention" id="q3" required placeholder="Machine name & Inventor">
+                </div>
+
+                <div class="q-box">
+                    <div class="q-title">4. Impact on Africa</div>
+                    <div class="q-text">Discuss both the positive and negative impacts on the African continent.</div>
+                    <textarea name="Q4_Africa" id="q4" rows="4" required placeholder="Positives and Negatives..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-red" id="submit-btn" style="width:100%; margin-top:20px;">Upload Script</button>
+            </form>
+        </div>
     </div>
 
     <div id="step-4" class="hidden">
-        <div class="step-label">Verification Required</div>
-        <div class="content-body">
-            <p class="instruction-text">Script uploaded. Enter your Index Number again to unlock results.</p>
-            <div class="input-group">
-                <input type="text" id="result-verify" placeholder="Re-enter Index">
-                <button class="btn-red" onclick="verifyForResult()">Unlock</button>
+        <div class="step-tag">VERIFICATION</div>
+        <div class="content">
+            <p class="instr">Script uploaded. Re-enter your Index Number to unlock result.</p>
+            <div class="input-row">
+                <input type="text" id="idx-verify" placeholder="Verify Index">
+                <button class="btn-red" onclick="unlockResult()">Unlock</button>
             </div>
         </div>
     </div>
 
     <div id="step-5" class="hidden">
-        <div class="step-label">Calculated Successful</div>
-        <div class="content-body">
-            <div class="result-card">
-                <p>Candidate: <strong id="res-name"></strong></p>
-                <p>Index: <span id="res-idx"></span></p>
-                <div style="display: flex; align-items: center; gap: 20px;">
-                    <span style="font-weight: bold; color: #666;">Status:</span>
-                    <span class="score-big" id="res-score">0%</span>
-                </div>
-            </div>
-            <button class="btn-red" style="width:100%; margin-top:20px;" onclick="location.reload()">Exit Portal</button>
+        <div class="step-tag">CALCULATED SUCCESSFUL</div>
+        <div class="content">
+            <p>Candidate: <strong id="res-name"></strong></p>
+            <p>Index: <span id="res-idx"></span></p>
+            <div class="score-box" id="res-score">0%</div>
+            <p class="instr">The results have been transmitted to the instructor.</p>
+            <button class="btn-red" style="width:100%;" onclick="location.reload()">Return Home</button>
         </div>
     </div>
 </div>
 
 <script>
-    const authorizedIndexes = ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202513", "202514", "202515"];
-    let student = { idx: "", name: "", score: "" };
+    const ids = ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202513", "202514", "202515"];
+    let session = { idx: "", name: "", pts: "0%" };
 
-    function validateIndex() {
-        let val = document.getElementById('index-check').value.trim();
-        if(authorizedIndexes.includes(val)) {
-            student.idx = val;
+    function validateLogin() {
+        let v = document.getElementById('idx-login').value.trim();
+        if(ids.includes(v)) {
+            session.idx = v;
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
-        } else { alert("INVALID INDEX"); }
+        } else { alert("ACCESS DENIED: Index Number not recognized."); }
     }
 
     function startExam() {
-        student.name = document.getElementById('student-name').value;
-        if(student.name) {
+        let n = document.getElementById('name-input').value.trim();
+        if(n) {
+            session.name = n;
             document.getElementById('step-2').classList.add('hidden');
             document.getElementById('step-3').classList.remove('hidden');
-        }
+        } else { alert("Please enter your name."); }
     }
 
     document.getElementById('exam-form').onsubmit = async (e) => {
         e.preventDefault();
-        let pts = 0;
-        if(document.getElementById('q1').value.length > 20) pts += 40;
-        if(document.getElementById('q2').value.length > 5) pts += 30;
-        if(document.getElementById('q3').value.length > 20) pts += 30;
         
-        student.score = pts + "%";
-        document.getElementById('h-index').value = student.idx;
-        document.getElementById('h-name').value = student.name;
-        document.getElementById('h-score').value = student.score;
+        // Simple Grading Logic
+        let score = 0;
+        if(document.getElementById('q1').value.length > 25) score += 25;
+        if(document.getElementById('q2').value.length > 5) score += 25;
+        if(document.getElementById('q3').value.length > 5) score += 25;
+        if(document.getElementById('q4').value.length > 30) score += 25;
+        session.pts = score + "%";
 
-        await fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' }});
+        // Map data to hidden fields for Formspree
+        document.getElementById('h-idx').value = session.idx;
+        document.getElementById('h-name').value = session.name;
+        document.getElementById('h-score').value = session.pts;
+
+        const subBtn = document.getElementById('submit-btn');
+        subBtn.innerText = "Transmitting...";
+        subBtn.disabled = true;
+
+        // AJAX Submission to Formspree
+        try {
+            await fetch(e.target.action, {
+                method: 'POST',
+                body: new FormData(e.target),
+                headers: { 'Accept': 'application/json' }
+            });
+        } catch (err) { console.log("Submission noted."); }
 
         document.getElementById('step-3').classList.add('hidden');
         document.getElementById('step-4').classList.remove('hidden');
-    }
+    };
 
-    function verifyForResult() {
-        let val = document.getElementById('result-verify').value.trim();
-        if(val === student.idx) {
+    function unlockResult() {
+        let v = document.getElementById('idx-verify').value.trim();
+        if(v === session.idx) {
             document.getElementById('step-4').classList.add('hidden');
             document.getElementById('step-5').classList.remove('hidden');
-            document.getElementById('res-name').innerText = student.name;
-            document.getElementById('res-idx').innerText = student.idx;
-            document.getElementById('res-score').innerText = student.score;
-        } else { alert("Verification Failed: Index does not match candidate record."); }
+            document.getElementById('res-name').innerText = session.name;
+            document.getElementById('res-idx').innerText = session.idx;
+            document.getElementById('res-score').innerText = session.pts;
+        } else { alert("Verification Failed!"); }
     }
 </script>
 </body>
