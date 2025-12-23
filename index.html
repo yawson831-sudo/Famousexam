@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academic Examination Portal</title>
     <style>
-        @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        
         :root { 
             --primary: #2563eb; 
             --success: #10b981; 
-            --glass: rgba(255, 255, 255, 0.92); 
+            --glass: rgba(255, 255, 255, 0.95); 
         }
 
         body { 
@@ -18,228 +16,170 @@
             margin: 0; padding: 20px; 
             min-height: 100vh; 
             display: flex; justify-content: center; align-items: center;
-            position: relative;
             overflow-x: hidden;
+            background-color: #000;
         }
 
-        /* Blurred Background Image */
-        body::before {
-            content: "";
+        /* Hacker Background using a reliable URL */
+        .bg-blur {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: url('https://raw.githubusercontent.com/Genius-831/Image-Host/main/Screenshot_20251222-161148.jpg'), #0f172a;
+            background: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070') no-repeat center center fixed; 
             background-size: cover;
-            background-position: center;
-            filter: blur(8px) brightness(0.4);
+            filter: blur(10px) brightness(0.3);
             z-index: -1;
         }
 
         .container { 
             max-width: 850px; width: 100%; 
             background: var(--glass); 
-            padding: 40px; border-radius: 25px; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5); 
-            backdrop-filter: blur(10px);
+            padding: 40px; border-radius: 30px; 
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.2); 
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .profile-img {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            margin: -20px auto 20px;
+            display: block;
+            object-fit: cover;
+            background-color: #000;
         }
 
         .hidden { display: none; }
 
         .section { 
+            text-align: left;
             background: white; padding: 25px; 
             border-radius: 15px; margin-bottom: 25px; 
             border-left: 6px solid var(--primary); 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
         }
 
         input, textarea { 
             width: 100%; padding: 14px; margin: 12px 0; 
             border: 2px solid #e2e8f0; border-radius: 12px; 
-            box-sizing: border-box; font-size: 1rem; 
+            font-size: 1rem; 
         }
 
         .btn { 
             background: var(--primary); color: white; 
             padding: 16px 30px; border: none; border-radius: 12px; 
             cursor: pointer; font-weight: bold; width: 100%; 
-            font-size: 1rem; transition: 0.3s; 
+            font-size: 1.1rem; transition: 0.3s; 
         }
 
-        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        
-        /* Hacker Profile Image Style */
-        .profile-img {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            border: 3px solid var(--primary);
-            margin: 0 auto 15px;
-            display: block;
-            object-fit: cover;
-        }
-
-        .q-img { width: 100%; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
-        .result-header { text-align: center; color: var(--primary); }
-        .score-display { font-size: 3.5rem; font-weight: bold; color: var(--success); margin: 10px 0; }
+        .btn:hover { background: #1e40af; transform: scale(1.02); }
+        .score-display { font-size: 4rem; color: var(--success); font-weight: 900; }
     </style>
 </head>
 <body>
 
+<div class="bg-blur"></div>
+
 <div class="container">
     
     <div id="step-1">
-        <img src="https://raw.githubusercontent.com/Genius-831/Image-Host/main/Screenshot_20251222-161148.jpg" class="profile-img" alt="Portal Icon">
-        <h1 style="text-align: center; color: var(--primary); margin-top:0;">Academic Portal</h1>
-        <p style="text-align: center;">Welcome. Please enter your authorized Index Number.</p>
+        <img src="https://w0.peakpx.com/wallpaper/218/125/HD-wallpaper-hacker-green-hacker-neon-thumbnail.jpg" class="profile-img" alt="Hacker Icon">
+        <h1 style="color: var(--primary);">Academic Portal</h1>
+        <p>Enter your authorized Index Number to access the server.</p>
         <input type="text" id="index-check" placeholder="Index Number (e.g., 202501)">
         <button class="btn" onclick="validateIndex()">Access Examination</button>
     </div>
 
     <div id="step-2" class="hidden">
-        <h2 style="text-align: center;">Student Profile</h2>
+        <h2>Identify Yourself</h2>
         <input type="text" id="student-name" placeholder="Enter Full Name">
-        <input type="text" id="student-class" placeholder="Enter Class/Form">
-        <button class="btn" onclick="startExam()">Begin Assessment</button>
+        <input type="text" id="student-class" placeholder="Enter Class">
+        <button class="btn" onclick="startExam()">Decrypt Exam Paper</button>
     </div>
 
     <div id="step-3" class="hidden">
         <form id="exam-form" action="https://formspree.io/f/mbdrpzdj" method="POST">
             <input type="hidden" name="Index" id="h-index">
             <input type="hidden" name="Name" id="h-name">
-            <input type="hidden" name="Class" id="h-class">
-            <input type="hidden" name="Grade_Result" id="h-score">
-            
-            <div style="text-align: center;">
-                <h2 id="display-name" style="margin-bottom:5px;">Exam Paper</h2>
-                <p>Topic: The Industrial Revolution</p>
-                <hr style="opacity: 0.1; margin: 20px 0;">
+            <input type="hidden" name="Grade" id="h-score">
+
+            <h2 id="display-name">Exam Paper</h2>
+            <p>Subject: The Industrial Revolution</p>
+            <hr>
+
+            <div class="section">
+                <h3>1. Definition</h3>
+                <textarea name="Q1" id="q1" required placeholder="Describe the Industrial Revolution..."></textarea>
             </div>
 
             <div class="section">
-                <h3>1. Definition (40 Marks)</h3>
-                <p>Explain in your own words what the Industrial Revolution was and why it changed the world.</p>
-                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800" class="q-img">
-                <textarea name="Q1_Definition" id="q1" required placeholder="Your answer..."></textarea>
+                <h3>2. Leading Nations</h3>
+                <input type="text" name="Q2" id="q2" required placeholder="USA, Britain, etc...">
             </div>
 
             <div class="section">
-                <h3>2. Major Nations (30 Marks)</h3>
-                <p>Which four major countries were the leaders of the Industrial Revolution?</p>
-                <input type="text" name="Q2_Countries" id="q2" required placeholder="List the 4 countries here...">
+                <h3>3. Impact on Africa</h3>
+                <textarea name="Q3" id="q3" required placeholder="Discuss positive/negative effects..."></textarea>
             </div>
 
-            <div class="section">
-                <h3>3. Impact on Africa (30 Marks)</h3>
-                <p>Discuss the positive and negative effects of industrialization on the African continent.</p>
-                <textarea name="Q3_Africa_Impact" id="q3" required placeholder="Describe the impacts..."></textarea>
-            </div>
-
-            <button type="submit" class="btn" id="submit-btn" style="background: #e11d48;">Submit Final Script</button>
+            <button type="submit" class="btn" style="background: #dc2626;">Upload Results</button>
         </form>
     </div>
 
-    <div id="step-4" class="hidden" style="text-align: center;">
-        <h2 class="result-header">Submission Successful</h2>
-        <div class="section" style="background: #f8fafc;">
-            <p>Candidate: <strong id="res-name"></strong></p>
-            <p>Index: <span id="res-idx"></span></p>
-            <hr style="opacity: 0.1;">
-            <p style="margin-bottom:0;">Your Calculated Score:</p>
-            <div class="score-display" id="res-score">0%</div>
-            <p id="res-status" style="font-size: 1.2rem; font-weight: bold; margin-top:0;"></p>
-        </div>
-        <p style="font-size: 0.9rem; color: #64748b;">A digital copy has been sent to your instructor for final review.</p>
-        <button class="btn" onclick="location.reload()">Return to Portal Home</button>
+    <div id="step-4" class="hidden">
+        <h2 style="color: var(--success);">Submission Encrypted & Sent</h2>
+        <div class="score-display" id="res-score">0%</div>
+        <p>Candidate: <strong id="res-name"></strong></p>
+        <button class="btn" onclick="location.reload()">Exit Portal</button>
     </div>
 
 </div>
 
 <script>
-    const authorizedIndexes = [
-        "202501", "202502", "202503", "202504", "202505", 
-        "202506", "202507", "202508", "202509", "202510",
-        "202511", "202512", "202513", "202514", "202515"
-    ];
-
-    let studentData = { index: "", name: "", class: "" };
+    const authorizedIndexes = ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202513", "202514", "202515"];
+    let student = { idx: "", name: "" };
 
     function validateIndex() {
-        const val = document.getElementById('index-check').value.trim();
-        if (authorizedIndexes.includes(val)) {
-            studentData.index = val;
+        let val = document.getElementById('index-check').value.trim();
+        if(authorizedIndexes.includes(val)) {
+            student.idx = val;
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
-        } else { alert("Access Denied: Index Number not recognized."); }
+        } else { alert("ACCESS DENIED"); }
     }
 
     function startExam() {
-        const name = document.getElementById('student-name').value.trim();
-        const sClass = document.getElementById('student-class').value.trim();
-        if(name && sClass) {
-            studentData.name = name;
-            studentData.class = sClass;
-            document.getElementById('display-name').innerText = "Candidate: " + name;
+        student.name = document.getElementById('student-name').value;
+        if(student.name) {
+            document.getElementById('display-name').innerText = "Paper for: " + student.name;
             document.getElementById('step-2').classList.add('hidden');
             document.getElementById('step-3').classList.remove('hidden');
-        } else { alert("Please enter both your name and class."); }
+        }
     }
 
-    const form = document.getElementById('exam-form');
-    form.onsubmit = async (e) => {
+    document.getElementById('exam-form').onsubmit = async (e) => {
         e.preventDefault();
-
-        let finalPoints = 0;
-        const q1Val = document.getElementById('q1').value.toLowerCase();
-        const q2Val = document.getElementById('q2').value.toLowerCase();
-        const q3Val = document.getElementById('q3').value.toLowerCase();
-
-        // Q1 Logic
-        const q1Keywords = ['machine', 'factory', 'steam', 'production', 'industry', 'technology', 'growth', 'change', 'transition'];
-        let q1Hits = 0;
-        q1Keywords.forEach(word => { if(q1Val.includes(word)) q1Hits++; });
-        if(q1Hits >= 2) finalPoints += 40;
-        else if(q1Hits >= 1) finalPoints += 25;
-
-        // Q2 Logic
-        const countryGroups = [
-            ['britain', 'uk', 'united kingdom', 'england'],
-            ['france'],
-            ['usa', 'america', 'united states'],
-            ['germany', 'deutschland']
-        ];
-        countryGroups.forEach(group => {
-            if(group.some(name => q2Val.includes(name))) finalPoints += 7.5;
-        });
-
-        // Q3 Logic
-        if(q3Val.length > 50) finalPoints += 30;
-        else if(q3Val.length > 15) finalPoints += 15;
-
-        const finalScore = Math.min(Math.round(finalPoints), 100);
         
-        document.getElementById('h-index').value = studentData.index;
-        document.getElementById('h-name').value = studentData.name;
-        document.getElementById('h-class').value = studentData.class;
-        document.getElementById('h-score').value = finalScore + "%";
+        let score = 0;
+        if(document.getElementById('q1').value.length > 20) score += 40;
+        if(document.getElementById('q2').value.length > 5) score += 30;
+        if(document.getElementById('q3').value.length > 20) score += 30;
 
-        const subBtn = document.getElementById('submit-btn');
-        subBtn.innerText = "Processing Results...";
-        subBtn.disabled = true;
+        document.getElementById('h-index').value = student.idx;
+        document.getElementById('h-name').value = student.name;
+        document.getElementById('h-score').value = score + "%";
 
-        try {
-            await fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
-            });
-        } catch (err) { console.log("Formspree handled."); }
+        const form = e.target;
+        await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+        });
 
         document.getElementById('step-3').classList.add('hidden');
         document.getElementById('step-4').classList.remove('hidden');
-        document.getElementById('res-name').innerText = studentData.name;
-        document.getElementById('res-idx').innerText = studentData.index;
-        document.getElementById('res-score').innerText = finalScore + "%";
-        document.getElementById('res-status').innerText = finalScore >= 40 ? "STATUS: PASSED" : "STATUS: NEEDS REVIEW";
-    };
+        document.getElementById('res-name').innerText = student.name;
+        document.getElementById('res-score').innerText = score + "%";
+    }
 </script>
-
 </body>
 </html>
