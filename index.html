@@ -3,199 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Examination & Result Portal</title>
+    <title>Academic Examination Portal</title>
     <style>
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        :root {
-            --primary: #2563eb;
-            --secondary: #1e40af;
-            --glass: rgba(255, 255, 255, 0.95);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e293b);
-            background-size: 400% 400%;
-            animation: gradient 12s ease infinite;
-            margin: 0; padding: 20px; min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        .container {
-            max-width: 850px; width: 100%;
-            background: var(--glass);
-            padding: 40px; border-radius: 25px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-        }
-
-        .card { text-align: center; padding: 10px; }
-        
-        input, textarea {
-            width: 100%; padding: 14px; margin: 12px 0;
-            border: 2px solid #e2e8f0; border-radius: 12px;
-            box-sizing: border-box; font-size: 1rem; transition: 0.3s;
-        }
-
-        input:focus { border-color: var(--primary); outline: none; }
-
-        .btn {
-            background: var(--primary); color: white;
-            padding: 16px 30px; border: none; border-radius: 12px;
-            cursor: pointer; font-weight: bold; width: 100%;
-            font-size: 1rem; transition: 0.3s; margin-top: 10px;
-        }
-
-        .btn-result { background: #10b981; margin-top: 15px; }
-        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-
+        @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        :root { --primary: #2563eb; --success: #10b981; --glass: rgba(255, 255, 255, 0.98); }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81); background-size: 400% 400%; animation: gradient 12s ease infinite; margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .container { max-width: 850px; width: 100%; background: var(--glass); padding: 40px; border-radius: 25px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
         .hidden { display: none; }
-        
-        .section { 
-            background: white; padding: 25px; border-radius: 15px; 
-            margin-bottom: 25px; border-left: 6px solid var(--primary);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
+        .section { background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 6px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        input, textarea { width: 100%; padding: 14px; margin: 12px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-size: 1rem; }
+        .btn { background: var(--primary); color: white; padding: 16px 30px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem; transition: 0.3s; }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .q-img { width: 100%; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
-        .flag-container { display: flex; gap: 8px; justify-content: center; margin: 15px 0; }
-        .flag-container img { width: 65px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        
-        #display-name { color: var(--primary); margin-bottom: 5px; }
+        .result-header { text-align: center; color: var(--primary); }
+        .score-display { font-size: 3.5rem; font-weight: bold; color: var(--success); margin: 10px 0; }
     </style>
 </head>
 <body>
 
 <div class="container">
     
-    <div id="step-1" class="card">
-        <h1 style="color: var(--primary); margin-bottom: 10px;">Academic Portal</h1>
-        <p>Enter your assigned Index Number to proceed.</p>
+    <div id="step-1">
+        <h1 style="text-align: center; color: var(--primary); margin-top:0;">Academic Portal</h1>
+        <p style="text-align: center;">Welcome. Please enter your authorized Index Number.</p>
         <input type="text" id="index-check" placeholder="Index Number (e.g., 202501)">
-        <button class="btn" onclick="validateIndex()">Start Examination</button>
-        <button class="btn btn-result" onclick="showResultSearch()">Check Results</button>
+        <button class="btn" onclick="validateIndex()">Access Examination</button>
     </div>
 
-    <div id="step-2" class="card hidden">
-        <h2>Identity Verification</h2>
-        <p>Index <span id="verified-idx" style="font-weight: bold; color: green;"></span> Verified!</p>
-        <input type="text" id="student-name-input" placeholder="Full Student Name">
-        <input type="text" id="student-class-input" placeholder="Class / Grade Level">
-        <button class="btn" onclick="startExam()">Enter Exam Hall</button>
+    <div id="step-2" class="hidden">
+        <h2 style="text-align: center;">Student Profile</h2>
+        <input type="text" id="student-name" placeholder="Enter Full Name">
+        <input type="text" id="student-class" placeholder="Enter Class/Form">
+        <button class="btn" onclick="startExam()">Begin Assessment</button>
     </div>
 
     <div id="step-3" class="hidden">
-        <form action="https://formspree.io/f/yawson831@gmail.com" method="POST">
-            <input type="hidden" name="Index" id="hidden-index">
-            <input type="hidden" name="Name" id="hidden-name">
-            <input type="hidden" name="Class" id="hidden-class">
-
+        <form id="exam-form" action="https://formspree.io/f/mbdrpzdj" method="POST">
+            <input type="hidden" name="Index" id="h-index">
+            <input type="hidden" name="Name" id="h-name">
+            <input type="hidden" name="Grade_Result" id="h-score">
+            
             <div style="text-align: center;">
-                <h2 id="display-name">Exam Paper</h2>
-                <p>Industrial Revolution History Assessment</p>
-                <hr style="opacity: 0.2; margin: 20px 0;">
+                <h2 id="display-name" style="margin-bottom:5px;">Exam Paper</h2>
+                <p>Topic: The Industrial Revolution</p>
+                <hr style="opacity: 0.1; margin: 20px 0;">
             </div>
 
             <div class="section">
-                <h3>1. Definition</h3>
-                <p>Define the Industrial Revolution and its significance.</p>
+                <h3>1. Definition (40 Marks)</h3>
+                <p>Explain in your own words what the Industrial Revolution was and why it changed the world.</p>
                 <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800" class="q-img">
-                <textarea name="Q1_Definition" required placeholder="Type your definition here..."></textarea>
+                <textarea name="Q1_Definition" id="q1" required placeholder="Your answer..."></textarea>
             </div>
 
             <div class="section">
-                <h3>2. Leading Countries</h3>
-                <p>Identify these four nations (GB, France, USA, Germany):</p>
-                <div class="flag-container">
-                    <img src="https://flagcdn.com/w160/gb.png">
-                    <img src="https://flagcdn.com/w160/fr.png">
-                    <img src="https://flagcdn.com/w160/us.png">
-                    <img src="https://flagcdn.com/w160/de.png">
-                </div>
-                <input type="text" name="Q2_Countries" placeholder="List the 4 countries...">
+                <h3>2. Major Nations (30 Marks)</h3>
+                <p>Which four major countries were the leaders of the Industrial Revolution?</p>
+                <input type="text" name="Q2_Countries" id="q2" required placeholder="List the countries here...">
             </div>
 
             <div class="section">
-                <h3>3. Global Impact</h3>
-                <p>Briefly discuss one positive and one negative impact of industrialization on Africa.</p>
-                <textarea name="Q3_Africa_Impact" placeholder="Positive: ... Negative: ..."></textarea>
+                <h3>3. Impact on Africa (30 Marks)</h3>
+                <p>Discuss the positive and negative effects of industrialization on the African continent.</p>
+                <textarea name="Q3_Africa_Impact" id="q3" required placeholder="Describe the impacts..."></textarea>
             </div>
 
-            <button type="submit" class="btn" style="background: #dc2626;">Final Submission</button>
+            <button type="submit" class="btn" style="background: #e11d48;">Submit Final Script</button>
         </form>
     </div>
 
-    <div id="result-portal" class="card hidden">
-        <h2>Result Checker</h2>
-        <div id="result-box" style="padding: 20px; background: #f1f5f9; border-radius: 15px; margin: 20px 0; font-size: 1.2rem;">
-            </div>
-        <button class="btn" onclick="location.reload()">Back to Home</button>
+    <div id="step-4" class="hidden" style="text-align: center;">
+        <h2 class="result-header">Submission Successful</h2>
+        <div class="section" style="background: #f8fafc;">
+            <p>Candidate: <strong id="res-name"></strong></p>
+            <p>Index: <span id="res-idx"></span></p>
+            <hr style="opacity: 0.1;">
+            <p style="margin-bottom:0;">Your Calculated Score:</p>
+            <div class="score-display" id="res-score">0%</div>
+            <p id="res-status" style="font-size: 1.2rem; font-weight: bold; margin-top:0;"></p>
+        </div>
+        <p style="font-size: 0.9rem; color: #64748b;">A digital copy has been sent to your instructor for final review.</p>
+        <button class="btn" onclick="location.reload()">Return to Portal Home</button>
     </div>
 
 </div>
 
 <script>
-    // 1. Authorized List (15 Index Numbers)
-    const authorizedIndexes = [
-        "202501", "202502", "202503", "202504", "202505",
-        "202506", "202507", "202508", "202509", "202510",
-        "202511", "202512", "202513", "202514", "202515"
-    ];
-
-    // 2. Marks Database (Teacher updates this after grading)
-    const grades = {
-        "202501": "Score: 88% | Grade: A",
-        "202502": "Score: Pending | Check back later",
-        "202503": "Score: 72% | Grade: B"
-    };
-
-    let tempIdx = "";
+    const authorizedIndexes = ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510"];
+    let studentData = { index: "", name: "" };
 
     function validateIndex() {
         const val = document.getElementById('index-check').value.trim();
         if (authorizedIndexes.includes(val)) {
-            tempIdx = val;
-            document.getElementById('verified-idx').innerText = val;
+            studentData.index = val;
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
-        } else {
-            alert("Invalid Index! Access Denied.");
-        }
+        } else { alert("Access Denied: Index Number not recognized."); }
     }
 
     function startExam() {
-        const n = document.getElementById('student-name-input').value.trim();
-        const c = document.getElementById('student-class-input').value.trim();
-        if(n && c) {
-            document.getElementById('hidden-index').value = tempIdx;
-            document.getElementById('hidden-name').value = n;
-            document.getElementById('hidden-class').value = c;
-            document.getElementById('display-name').innerText = "Paper for " + n;
+        const name = document.getElementById('student-name').value.trim();
+        if(name) {
+            studentData.name = name;
+            document.getElementById('display-name').innerText = "Candidate: " + name;
             document.getElementById('step-2').classList.add('hidden');
             document.getElementById('step-3').classList.remove('hidden');
-        } else {
-            alert("Please provide your name and class.");
-        }
+        } else { alert("Please enter your name to proceed."); }
     }
 
-    function showResultSearch() {
-        const val = document.getElementById('index-check').value.trim();
-        if (!val) { alert("Please enter your index number first."); return; }
+    const form = document.getElementById('exam-form');
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+
+        // --- LENIENT AUTO-MARKING LOGIC ---
+        let finalPoints = 0;
+        const q1Val = document.getElementById('q1').value.toLowerCase();
+        const q2Val = document.getElementById('q2').value.toLowerCase();
+        const q3Val = document.getElementById('q3').value.toLowerCase();
+
+        // Q1: Definition (Generous Keyword Check)
+        const q1Keywords = ['machine', 'factory', 'steam', 'production', 'industry', 'technology', 'growth', 'change', 'transition'];
+        let q1Hits = 0;
+        q1Keywords.forEach(word => { if(q1Val.includes(word)) q1Hits++; });
+        // If they hit 3 keywords, they get full 40 marks. If 2, they get 30.
+        if(q1Hits >= 3) finalPoints += 40;
+        else if(q1Hits >= 1) finalPoints += 25;
+
+        // Q2: Countries (Flexible Names)
+        const countryGroups = [
+            ['britain', 'uk', 'united kingdom', 'england'],
+            ['france'],
+            ['usa', 'america', 'united states'],
+            ['germany', 'deutschland']
+        ];
+        countryGroups.forEach(group => {
+            if(group.some(name => q2Val.includes(name))) finalPoints += 7.5;
+        });
+
+        // Q3: Impact (Effort-Based Marking)
+        if(q3Val.length > 60) finalPoints += 30; // Detailed answer
+        else if(q3Val.length > 20) finalPoints += 15; // Short answer
+        else if(q3Val.length > 5) finalPoints += 5; // Minimal effort
+
+        const finalScore = Math.min(Math.round(finalPoints), 100);
         
-        if (authorizedIndexes.includes(val)) {
-            document.getElementById('step-1').classList.add('hidden');
-            document.getElementById('result-portal').classList.remove('hidden');
-            const res = grades[val] || "No result uploaded yet for this Index.";
-            document.getElementById('result-box').innerHTML = `<strong>Index: ${val}</strong><br><br>${res}`;
-        } else {
-            alert("Index not found.");
+        // Data Prep
+        document.getElementById('h-index').value = studentData.index;
+        document.getElementById('h-name').value = studentData.name;
+        document.getElementById('h-score').value = finalScore + "%";
+
+        // Button State
+        const subBtn = form.querySelector('button');
+        subBtn.innerText = "Processing Results...";
+        subBtn.disabled = true;
+
+        // AJAX Submission to Formspree
+        try {
+            await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+        } catch (err) {
+            console.log("Submission error, showing result anyway.");
         }
-    }
+
+        // Show Final Result
+        document.getElementById('step-3').classList.add('hidden');
+        document.getElementById('step-4').classList.remove('hidden');
+        document.getElementById('res-name').innerText = studentData.name;
+        document.getElementById('res-idx').innerText = studentData.index;
+        document.getElementById('res-score').innerText = finalScore + "%";
+        document.getElementById('res-status').innerText = finalScore >= 40 ? "STATUS: SATISFACTORY" : "STATUS: NEEDS REVIEW";
+    };
 </script>
 
 </body>
