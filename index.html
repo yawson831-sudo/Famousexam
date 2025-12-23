@@ -6,73 +6,97 @@
     <title>Academic Examination Portal</title>
     <style>
         :root { 
-            --primary: #2563eb; 
-            --success: #10b981; 
-            --glass: rgba(255, 255, 255, 0.95); 
+            --primary-red: #dc2626; 
+            --bg-gray: #f3f4f6;
+            --text-dark: #1f2937;
+            --glass: rgba(255, 255, 255, 0.98); 
         }
 
         body { 
-            font-family: 'Segoe UI', sans-serif; 
-            margin: 0; padding: 20px; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 10px; 
             min-height: 100vh; 
-            display: flex; justify-content: center; align-items: center;
-            overflow-x: hidden;
+            display: flex; justify-content: center; align-items: flex-start;
             background-color: #000;
         }
 
-        /* Hacker Background using a reliable URL */
         .bg-blur {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070') no-repeat center center fixed; 
+            background: url('https://w0.peakpx.com/wallpaper/218/125/HD-wallpaper-hacker-green-hacker-neon-thumbnail.jpg') no-repeat center center fixed; 
             background-size: cover;
-            filter: blur(10px) brightness(0.3);
+            filter: blur(15px) brightness(0.3);
             z-index: -1;
         }
 
         .container { 
-            max-width: 850px; width: 100%; 
+            max-width: 600px; width: 100%; 
             background: var(--glass); 
-            padding: 40px; border-radius: 30px; 
-            box-shadow: 0 0 40px rgba(0, 255, 0, 0.2); 
-            text-align: center;
-            backdrop-filter: blur(5px);
+            padding: 0; border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
+            overflow: hidden;
+            margin-top: 20px;
         }
 
-        .profile-img {
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            border: 4px solid var(--primary);
-            margin: -20px auto 20px;
-            display: block;
-            object-fit: cover;
-            background-color: #000;
+        .portal-header {
+            background: var(--primary-red);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
         }
 
-        .hidden { display: none; }
+        .step-label {
+            background: #fff;
+            color: #666;
+            display: inline-block;
+            padding: 5px 15px;
+            margin: 20px 20px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
-        .section { 
-            text-align: left;
-            background: white; padding: 25px; 
-            border-radius: 15px; margin-bottom: 25px; 
-            border-left: 6px solid var(--primary); 
+        .content-body { padding: 0 20px 20px; }
+        .instruction-text { color: #666; font-size: 0.9rem; margin-bottom: 15px; }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         input, textarea { 
-            width: 100%; padding: 14px; margin: 12px 0; 
-            border: 2px solid #e2e8f0; border-radius: 12px; 
-            font-size: 1rem; 
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fafafa;
         }
 
-        .btn { 
-            background: var(--primary); color: white; 
-            padding: 16px 30px; border: none; border-radius: 12px; 
-            cursor: pointer; font-weight: bold; width: 100%; 
-            font-size: 1.1rem; transition: 0.3s; 
+        .btn-red { 
+            background: var(--primary-red);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        .btn:hover { background: #1e40af; transform: scale(1.02); }
-        .score-display { font-size: 4rem; color: var(--success); font-weight: 900; }
+        .hidden { display: none; }
+        .score-big { font-size: 3rem; color: #10b981; font-weight: bold; }
+        
+        .result-card {
+            background: #fff;
+            border-top: 4px solid var(--primary-red);
+            padding: 20px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -80,20 +104,25 @@
 <div class="bg-blur"></div>
 
 <div class="container">
-    
+    <div class="portal-header"><span>⌂</span> Academic Portal</div>
+
     <div id="step-1">
-        <img src="https://w0.peakpx.com/wallpaper/218/125/HD-wallpaper-hacker-green-hacker-neon-thumbnail.jpg" class="profile-img" alt="Hacker Icon">
-        <h1 style="color: var(--primary);">Academic Portal</h1>
-        <p>Enter your authorized Index Number to access the server.</p>
-        <input type="text" id="index-check" placeholder="Index Number (e.g., 202501)">
-        <button class="btn" onclick="validateIndex()">Access Examination</button>
+        <div class="step-label">Step-1</div>
+        <div class="content-body">
+            <p class="instruction-text">Welcome. Please enter authorized Index Number.</p>
+            <div class="input-group">
+                <input type="text" id="index-check" placeholder="Index Number (202501)">
+                <button class="btn-red" onclick="validateIndex()">Begin Exam</button>
+            </div>
+        </div>
     </div>
 
     <div id="step-2" class="hidden">
-        <h2>Identify Yourself</h2>
-        <input type="text" id="student-name" placeholder="Enter Full Name">
-        <input type="text" id="student-class" placeholder="Enter Class">
-        <button class="btn" onclick="startExam()">Decrypt Exam Paper</button>
+        <div class="step-label">Candidate Info</div>
+        <div class="content-body">
+            <input type="text" id="student-name" placeholder="Full Name">
+            <button class="btn-red" style="width:100%; margin-top:15px;" onclick="startExam()">Enter Hall</button>
+        </div>
     </div>
 
     <div id="step-3" class="hidden">
@@ -101,42 +130,46 @@
             <input type="hidden" name="Index" id="h-index">
             <input type="hidden" name="Name" id="h-name">
             <input type="hidden" name="Grade" id="h-score">
-
-            <h2 id="display-name">Exam Paper</h2>
-            <p>Subject: The Industrial Revolution</p>
-            <hr>
-
-            <div class="section">
-                <h3>1. Definition</h3>
-                <textarea name="Q1" id="q1" required placeholder="Describe the Industrial Revolution..."></textarea>
+            <div class="step-label">Exam in Progress</div>
+            <div class="content-body">
+                <textarea name="Q1" id="q1" placeholder="Answer Q1..." required></textarea>
+                <input type="text" name="Q2" id="q2" placeholder="Answer Q2..." required style="margin-top:10px;">
+                <textarea name="Q3" id="q3" placeholder="Answer Q3..." required style="margin-top:10px;"></textarea>
+                <button type="submit" class="btn-red" style="width:100%; margin-top:20px;">Submit Final Script</button>
             </div>
-
-            <div class="section">
-                <h3>2. Leading Nations</h3>
-                <input type="text" name="Q2" id="q2" required placeholder="USA, Britain, etc...">
-            </div>
-
-            <div class="section">
-                <h3>3. Impact on Africa</h3>
-                <textarea name="Q3" id="q3" required placeholder="Discuss positive/negative effects..."></textarea>
-            </div>
-
-            <button type="submit" class="btn" style="background: #dc2626;">Upload Results</button>
         </form>
     </div>
 
     <div id="step-4" class="hidden">
-        <h2 style="color: var(--success);">Submission Encrypted & Sent</h2>
-        <div class="score-display" id="res-score">0%</div>
-        <p>Candidate: <strong id="res-name"></strong></p>
-        <button class="btn" onclick="location.reload()">Exit Portal</button>
+        <div class="step-label">Verification Required</div>
+        <div class="content-body">
+            <p class="instruction-text">Script uploaded. Enter your Index Number again to unlock results.</p>
+            <div class="input-group">
+                <input type="text" id="result-verify" placeholder="Re-enter Index">
+                <button class="btn-red" onclick="verifyForResult()">Unlock</button>
+            </div>
+        </div>
     </div>
 
+    <div id="step-5" class="hidden">
+        <div class="step-label">Calculated Successful</div>
+        <div class="content-body">
+            <div class="result-card">
+                <p>Candidate: <strong id="res-name"></strong></p>
+                <p>Index: <span id="res-idx"></span></p>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <span style="font-weight: bold; color: #666;">Status:</span>
+                    <span class="score-big" id="res-score">0%</span>
+                </div>
+            </div>
+            <button class="btn-red" style="width:100%; margin-top:20px;" onclick="location.reload()">Exit Portal</button>
+        </div>
+    </div>
 </div>
 
 <script>
     const authorizedIndexes = ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202513", "202514", "202515"];
-    let student = { idx: "", name: "" };
+    let student = { idx: "", name: "", score: "" };
 
     function validateIndex() {
         let val = document.getElementById('index-check').value.trim();
@@ -144,13 +177,12 @@
             student.idx = val;
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
-        } else { alert("ACCESS DENIED"); }
+        } else { alert("INVALID INDEX"); }
     }
 
     function startExam() {
         student.name = document.getElementById('student-name').value;
         if(student.name) {
-            document.getElementById('display-name').innerText = "Paper for: " + student.name;
             document.getElementById('step-2').classList.add('hidden');
             document.getElementById('step-3').classList.remove('hidden');
         }
@@ -158,27 +190,31 @@
 
     document.getElementById('exam-form').onsubmit = async (e) => {
         e.preventDefault();
+        let pts = 0;
+        if(document.getElementById('q1').value.length > 20) pts += 40;
+        if(document.getElementById('q2').value.length > 5) pts += 30;
+        if(document.getElementById('q3').value.length > 20) pts += 30;
         
-        let score = 0;
-        if(document.getElementById('q1').value.length > 20) score += 40;
-        if(document.getElementById('q2').value.length > 5) score += 30;
-        if(document.getElementById('q3').value.length > 20) score += 30;
-
+        student.score = pts + "%";
         document.getElementById('h-index').value = student.idx;
         document.getElementById('h-name').value = student.name;
-        document.getElementById('h-score').value = score + "%";
+        document.getElementById('h-score').value = student.score;
 
-        const form = e.target;
-        await fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { 'Accept': 'application/json' }
-        });
+        await fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' }});
 
         document.getElementById('step-3').classList.add('hidden');
         document.getElementById('step-4').classList.remove('hidden');
-        document.getElementById('res-name').innerText = student.name;
-        document.getElementById('res-score').innerText = score + "%";
+    }
+
+    function verifyForResult() {
+        let val = document.getElementById('result-verify').value.trim();
+        if(val === student.idx) {
+            document.getElementById('step-4').classList.add('hidden');
+            document.getElementById('step-5').classList.remove('hidden');
+            document.getElementById('res-name').innerText = student.name;
+            document.getElementById('res-idx').innerText = student.idx;
+            document.getElementById('res-score').innerText = student.score;
+        } else { alert("Verification Failed: Index does not match candidate record."); }
     }
 </script>
 </body>
