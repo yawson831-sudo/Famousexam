@@ -1,257 +1,88 @@
+const express = require('express');
+const { spawn } = require('child_process');
+const path = require('path');
+const app = express();
+
+app.use(express.json());
+
+// --- CONFIGURATION ---
+const SESSION_DATA = "CYPHER-X:~UEsDBBQAAAgIAOgSmlu0JXeLPgUAAJMLAAAKAAAAY3JlZHMuanNvbs2WWW*jNhDHvwtfY9S6DwMBKpGUbMv3KbvoAyNRsmxdpijb8iLfvZCT7C7QdpECeaieKB7D3*w5nOE3kBdJRT3agN43ULLkQjhtm7wpKegBu44iykAHhIQT0AOK51gWPU70C75JIhdvKowCyXfv2h6jwZOCfM8eO*4Kr4Vn8NoBZf2SJsEvDKpuHvpkKw6u1nLi4fH8oIZNao3Po+Y+1eEaouR0d8UsWl2fwWtrkSQsyWNcHmhGGUk92sxIwj6H3wwi*bjtL06mUHQrqVuW6q5aH4Xb4BIE8k56Iaa5dPN4uB18Dn8jDt1+IG*OYWrIccBu1nk9ry5U3BhGhJb32ybqnnZCvzzN3*CrJM5pOAhpzhPefFp310lsG1WlfjQskwdhHe378T6ILLkN7lypT6N6vE3ikurkOPgcuBnsyKs4cesfKdBVYB+Jq7niHUIrG9aR72YghPMleNHOUn8Fn7CNWTv9J9wk2pKXqCIaDd94ALxUUm5GWIuW405uFcN*3F6eVt+Z4*jl8TaR8cTTFfb3pas6MOMN9OKkvq*sJrVlw3D9NzqtT*yyRVfwDn*Ca*YpyPYqpXJPlJtuK51qfHPr29lweiHeEymTXjIcD9mTIA1eZYzczDlEWO8HciYjUSFux3uSjBduVRvxEVPPo7wNXixqUXJ8fHp1oMwhBT3ztAEbjpOKM8KTI2z5J6gASXpY0YJQ*1AU2vgklWsf+7Cjcgv2pIcqUXLf6y80R97Exw8hc75m7URB+Bh1QsiKgVUXDflLxgjVjWlUkphXo*fE4qNZnRrOC02ESgh6QZFkVFF0UdEH4vfrteiC8ImX5W0456ICIFdmYgl5E0op2wGOFBbGiqbZkQwh1HUEsIlXSZMGyBQGqstVCEMaTIClJzkEPgNankNGqSvJ4XISt3mXeKpG9wa2SjFacZCXoibqm6aIkmspr58t4HU1WFWzpAjJFw7ShYiJJsw3LEEwkyv8*XlNDFjIR1FXBMhTVMbCADQmbugZ1xf7*8doQixAhS9NUx3ZkFWu2rskYI0dGuv41vOoX8loS0hzbwqKgqLJliqqsqoqNJF1AtoC+hlf7Ql6EkIotWcWW4zhIUhXHkQXLclSoYNP4Gl799c8OyOmNv6X1NhkZotwBUcIqvs7rMi1I+JH0v4+SICjqnC+bPIBtgzLQE390U86TPK5aDeqcsOCQXChsPX738HsGpIyGoMdZTb9XdfgG7o3Q3FkZPmjpW0N*U7En*V3H9DHLUCVFMlRZ0Q1VN3rS7213B+Qke1hO8rgV5R22tR1STpK0Aj0AB8v43N1hPLu73Chc18KxBeM2uX0491FF3tL0cWGM9cHYK5St7ixqkw7z7r044Gx6mCrQ3w9nipYtvLl3Wz**gxHQA+nGPQ8ZPB98Vs9YMH5ZnpJVnYzMm2Lvzkvv4qGRDHcugcT3LvUkLLuuBzXfXm9X92onHUU1kVK*YBucQl+pMywvYVtyOiCklySgP28WBodkgrvECqTrfj6+xdGauNSXldnTHXumVI8y2acvGB+vo3m+zAh9yfdWpdUXAefXQPNpl93m3E*De0bKvjuNFXqI3+rbo76m7++a5L30JI*fKKGPZ8L7EfzLAb3htkEmvHZ+Wvn+3PiXkm3vhAhNGwTPU6e+rV8ufrLvGtpgMTwWq9pKpeXqaVqelidYbcBrG+5lSnhUsAz0AMlDVjw2Z0XdBu0gj4pfbAataoDmMWr9TUnFrR8X4Z9ul*Q2a8aKsk+qQxvBrmJldRvVjVWWS074x8UCVvuNCwe8*gVQSwECFAMUAAAICADoEppbtCV3iz4FAACTCwAACgAAAAAAAAAAAAAApIEAAAAAY3JlZHMuanNvblBLBQYAAAAAAQABADgAAABmBQAAAAA=";
+
+let BOTS = {
+    'Cypher-X': { folder: 'CypherX', file: 'index.js', process: null, status: 'Offline' }
+};
+
+// --- FRONTEND (HTML) ---
+const HTML_DASHBOARD = `
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Social Quiz – Famous Academy</title>
-
-<style>
-:root { 
-    --accent:#3b82f6;
-    --accent-glow:rgba(59,130,246,.5);
-    --text:#ffffff;
-}
-
-body{
-    margin:0;
-    padding:20px;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    font-family:system-ui,Segoe UI,sans-serif;
-    color:var(--text);
-    background:
-      linear-gradient(rgba(15,23,42,.88),rgba(15,23,42,.88)),
-      url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1600&q=80");
-    background-size:cover;
-    background-attachment:fixed;
-}
-
-.mesh-bg{
-    position:fixed;
-    inset:0;
-    background:radial-gradient(circle at center,rgba(59,130,246,.2),transparent 60%);
-    z-index:-1;
-}
-
-.container{
-    max-width:560px;
-    width:100%;
-    background:rgba(255,255,255,.06);
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,.15);
-    border-radius:24px;
-    overflow:hidden;
-    box-shadow:0 25px 50px rgba(0,0,0,.5);
-}
-
-.header{
-    padding:25px;
-    text-align:center;
-    border-bottom:1px solid rgba(255,255,255,.15);
-}
-
-.school-crest{
-    display:flex;
-    justify-content:center;
-    margin-bottom:10px;
-}
-
-.crest-inner{
-    width:90px;
-    height:90px;
-    border-radius:50%;
-    background:linear-gradient(135deg,#1e40af,#3b82f6);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 0 0 4px rgba(255,255,255,.15);
-}
-
-.crest-text{
-    font-size:.7rem;
-    font-weight:900;
-    letter-spacing:2px;
-    text-align:center;
-}
-
-.header h1{
-    margin:0;
-    font-size:1.5rem;
-    font-weight:800;
-}
-
-.content{padding:30px}
-.hidden{display:none}
-
-input,textarea{
-    width:100%;
-    padding:14px;
-    margin-bottom:18px;
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:12px;
-    color:white;
-}
-
-textarea{min-height:90px}
-
-input:focus,textarea:focus{
-    outline:none;
-    border-color:var(--accent);
-    box-shadow:0 0 0 4px var(--accent-glow);
-}
-
-.btn{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:12px;
-    font-weight:700;
-    cursor:pointer;
-}
-
-.btn-main{background:var(--accent);color:white}
-.btn-alt{background:rgba(255,255,255,.15);color:white;margin-top:10px}
-
-.q-image{
-    width:100%;
-    border-radius:12px;
-    margin-bottom:10px;
-}
-
-.score{
-    font-size:4rem;
-    font-weight:900;
-    text-align:center;
-}
-</style>
+    <title>Cypher-X Panel</title>
+    <style>
+        body { background: #0b141a; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
+        .panel { background: #202c33; padding: 30px; border-radius: 20px; display: inline-block; border-top: 4px solid #00a884; width: 400px; }
+        .status { font-size: 1.2rem; margin: 20px 0; padding: 10px; border-radius: 5px; }
+        .Online { background: rgba(0, 168, 132, 0.2); color: #00a884; border: 1px solid #00a884; }
+        .Offline { background: rgba(234, 0, 56, 0.2); color: #ea0038; border: 1px solid #ea0038; }
+        button { width: 100%; padding: 15px; margin-top: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .start { background: #00a884; color: white; }
+        .stop { background: #ea0038; color: white; }
+    </style>
 </head>
-
 <body>
-<div class="mesh-bg"></div>
-
-<div class="container">
-
-<!-- HEADER -->
-<div class="header">
-    <div class="school-crest">
-        <div class="crest-inner">
-            <span class="crest-text">FAMOUS<br>ACADEMY</span>
-        </div>
+    <div class="panel">
+        <h1 style="color: #00a884">Cypher-X</h1>
+        <div id="st" class="status Offline">Status: Offline</div>
+        <button class="start" onclick="run('start')">START DEPLOYMENT</button>
+        <button class="stop" onclick="run('stop')">TERMINATE</button>
     </div>
-    <h1>SOCIAL QUIZ</h1>
-</div>
-
-<!-- STEP 1: INDEX -->
-<div id="step1" class="content">
-    <input id="indexInput" placeholder="Index Number">
-    <button class="btn btn-main" onclick="goDetails()">Continue</button>
-    <button class="btn btn-alt" onclick="openCheck()">Check Result</button>
-</div>
-
-<!-- STEP 2: DETAILS -->
-<div id="step2" class="content hidden">
-    <input id="nameInput" placeholder="Full Name">
-    <button class="btn btn-main" onclick="startQuiz()">Start Quiz</button>
-</div>
-
-<!-- QUIZ -->
-<div id="quiz" class="content hidden">
-<form id="quizForm">
-    <textarea id="q1" placeholder="Define Industrial Revolution" required></textarea>
-    <input id="q2" placeholder="Origin of Industrial Revolution" required>
-
-    <img class="q-image"
-         src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600">
-    <input id="q3" placeholder="Identify the machine" required>
-
-    <textarea id="q4" placeholder="State two impacts on Africa" required></textarea>
-
-    <button class="btn btn-main">Submit</button>
-</form>
-</div>
-
-<!-- RESULT AFTER SUBMISSION -->
-<div id="result" class="content hidden">
-    <div id="finalScore" class="score"></div>
-    <button class="btn btn-main" onclick="window.print()">Download Result</button>
-</div>
-
-<!-- CHECK RESULT PAGE -->
-<div id="check" class="content hidden">
-    <input id="checkIndex" placeholder="Enter Index Number">
-    <button class="btn btn-main" onclick="checkResult()">View Result</button>
-    <div id="checkOutput"></div>
-</div>
-
-</div>
-
-<script>
-const validIndexes = ["202501","202502","202503"];
-
-let currentIndex = "";
-let currentName = "";
-
-function goDetails(){
-    const idx = indexInput.value.trim();
-    if(!validIndexes.includes(idx)){
-        alert("Invalid Index Number");
-        return;
-    }
-    currentIndex = idx;
-    step1.classList.add("hidden");
-    step2.classList.remove("hidden");
-}
-
-function startQuiz(){
-    if(nameInput.value.trim()===""){
-        alert("Enter your full name");
-        return;
-    }
-    currentName = nameInput.value.trim();
-    step2.classList.add("hidden");
-    quiz.classList.remove("hidden");
-}
-
-quizForm.onsubmit = e =>{
-    e.preventDefault();
-    let score = 0;
-
-    if(q1.value.length > 20) score += 25;
-    if(q2.value.length > 5) score += 25;
-    if(q3.value.length > 5) score += 25;
-    if(q4.value.length > 30) score += 25;
-
-    const data = {
-        name: currentName,
-        score: score
-    };
-
-    localStorage.setItem("RESULT_"+currentIndex, JSON.stringify(data));
-
-    quiz.classList.add("hidden");
-    result.classList.remove("hidden");
-    finalScore.innerText = score + "%";
-}
-
-function openCheck(){
-    step1.classList.add("hidden");
-    check.classList.remove("hidden");
-}
-
-function checkResult(){
-    const data = localStorage.getItem("RESULT_"+checkIndex.value.trim());
-    if(!data){
-        checkOutput.innerHTML = "<p>No result found</p>";
-        return;
-    }
-    const r = JSON.parse(data);
-    checkOutput.innerHTML =
-        `<h3>${r.name}</h3><p><strong>Score:</strong> ${r.score}%</p>`;
-}
-</script>
-
+    <script>
+        async function up() {
+            const r = await fetch('/api/status');
+            const d = await r.json();
+            const s = document.getElementById('st');
+            s.innerText = "Status: " + d[0].status;
+            s.className = "status " + d[0].status;
+        }
+        async function run(a) {
+            await fetch('/api/' + a, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ name: 'Cypher-X' })});
+            setTimeout(up, 1000);
+        }
+        setInterval(up, 3000);
+        up();
+    </script>
 </body>
 </html>
+`;
+
+// --- API ROUTES ---
+app.get('/', (req, res) => res.send(HTML_DASHBOARD));
+
+app.get('/api/status', (req, res) => {
+    res.json(Object.keys(BOTS).map(n => ({ name: n, status: BOTS[n].status })));
+});
+
+app.post('/api/start', (req, res) => {
+    const bot = BOTS['Cypher-X'];
+    if (bot && !bot.process) {
+        const botPath = path.join(__dirname, 'bots', bot.folder);
+        const child = spawn('node', [path.join(botPath, bot.file)], {
+            cwd: botPath,
+            env: { ...process.env, SESSION_ID: SESSION_DATA }
+        });
+        bot.process = child;
+        bot.status = 'Online';
+        child.stdout.on('data', d => console.log(\`[BOT]: \${d}\`));
+        child.on('close', () => { bot.process = null; bot.status = 'Offline'; });
+        res.json({ status: 'OK' });
+    }
+});
+
+app.post('/api/stop', (req, res) => {
+    if (BOTS['Cypher-X'].process) {
+        BOTS['Cypher-X'].process.kill();
+        res.json({ status: 'Stopped' });
+    }
+});
+
+app.listen(3000, () => console.log('OPEN BROWSER TO: http://localhost:3000'));
