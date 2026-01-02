@@ -1,88 +1,185 @@
-const express = require('express');
-const { spawn } = require('child_process');
-const path = require('path');
-const app = express();
-
-app.use(express.json());
-
-// --- CONFIGURATION ---
-const SESSION_DATA = "CYPHER-X:~UEsDBBQAAAgIAOgSmlu0JXeLPgUAAJMLAAAKAAAAY3JlZHMuanNvbs2WWW*jNhDHvwtfY9S6DwMBKpGUbMv3KbvoAyNRsmxdpijb8iLfvZCT7C7QdpECeaieKB7D3*w5nOE3kBdJRT3agN43ULLkQjhtm7wpKegBu44iykAHhIQT0AOK51gWPU70C75JIhdvKowCyXfv2h6jwZOCfM8eO*4Kr4Vn8NoBZf2SJsEvDKpuHvpkKw6u1nLi4fH8oIZNao3Po+Y+1eEaouR0d8UsWl2fwWtrkSQsyWNcHmhGGUk92sxIwj6H3wwi*bjtL06mUHQrqVuW6q5aH4Xb4BIE8k56Iaa5dPN4uB18Dn8jDt1+IG*OYWrIccBu1nk9ry5U3BhGhJb32ybqnnZCvzzN3*CrJM5pOAhpzhPefFp310lsG1WlfjQskwdhHe378T6ILLkN7lypT6N6vE3ikurkOPgcuBnsyKs4cesfKdBVYB+Jq7niHUIrG9aR72YghPMleNHOUn8Fn7CNWTv9J9wk2pKXqCIaDd94ALxUUm5GWIuW405uFcN*3F6eVt+Z4*jl8TaR8cTTFfb3pas6MOMN9OKkvq*sJrVlw3D9NzqtT*yyRVfwDn*Ca*YpyPYqpXJPlJtuK51qfHPr29lweiHeEymTXjIcD9mTIA1eZYzczDlEWO8HciYjUSFux3uSjBduVRvxEVPPo7wNXixqUXJ8fHp1oMwhBT3ztAEbjpOKM8KTI2z5J6gASXpY0YJQ*1AU2vgklWsf+7Cjcgv2pIcqUXLf6y80R97Exw8hc75m7URB+Bh1QsiKgVUXDflLxgjVjWlUkphXo*fE4qNZnRrOC02ESgh6QZFkVFF0UdEH4vfrteiC8ImX5W0456ICIFdmYgl5E0op2wGOFBbGiqbZkQwh1HUEsIlXSZMGyBQGqstVCEMaTIClJzkEPgNankNGqSvJ4XISt3mXeKpG9wa2SjFacZCXoibqm6aIkmspr58t4HU1WFWzpAjJFw7ShYiJJsw3LEEwkyv8*XlNDFjIR1FXBMhTVMbCADQmbugZ1xf7*8doQixAhS9NUx3ZkFWu2rskYI0dGuv41vOoX8loS0hzbwqKgqLJliqqsqoqNJF1AtoC+hlf7Ql6EkIotWcWW4zhIUhXHkQXLclSoYNP4Gl799c8OyOmNv6X1NhkZotwBUcIqvs7rMi1I+JH0v4+SICjqnC+bPIBtgzLQE390U86TPK5aDeqcsOCQXChsPX738HsGpIyGoMdZTb9XdfgG7o3Q3FkZPmjpW0N*U7En*V3H9DHLUCVFMlRZ0Q1VN3rS7213B+Qke1hO8rgV5R22tR1STpK0Aj0AB8v43N1hPLu73Chc18KxBeM2uX0491FF3tL0cWGM9cHYK5St7ixqkw7z7r044Gx6mCrQ3w9nipYtvLl3Wz**gxHQA+nGPQ8ZPB98Vs9YMH5ZnpJVnYzMm2Lvzkvv4qGRDHcugcT3LvUkLLuuBzXfXm9X92onHUU1kVK*YBucQl+pMywvYVtyOiCklySgP28WBodkgrvECqTrfj6+xdGauNSXldnTHXumVI8y2acvGB+vo3m+zAh9yfdWpdUXAefXQPNpl93m3E*De0bKvjuNFXqI3+rbo76m7++a5L30JI*fKKGPZ8L7EfzLAb3htkEmvHZ+Wvn+3PiXkm3vhAhNGwTPU6e+rV8ufrLvGtpgMTwWq9pKpeXqaVqelidYbcBrG+5lSnhUsAz0AMlDVjw2Z0XdBu0gj4pfbAataoDmMWr9TUnFrR8X4Z9ul*Q2a8aKsk+qQxvBrmJldRvVjVWWS074x8UCVvuNCwe8*gVQSwECFAMUAAAICADoEppbtCV3iz4FAACTCwAACgAAAAAAAAAAAAAApIEAAAAAY3JlZHMuanNvblBLBQYAAAAAAQABADgAAABmBQAAAAA=";
-
-let BOTS = {
-    'Cypher-X': { folder: 'CypherX', file: 'index.js', process: null, status: 'Offline' }
-};
-
-// --- FRONTEND (HTML) ---
-const HTML_DASHBOARD = `
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cypher-X Panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Yawson - Assessment</title>
     <style>
-        body { background: #0b141a; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
-        .panel { background: #202c33; padding: 30px; border-radius: 20px; display: inline-block; border-top: 4px solid #00a884; width: 400px; }
-        .status { font-size: 1.2rem; margin: 20px 0; padding: 10px; border-radius: 5px; }
-        .Online { background: rgba(0, 168, 132, 0.2); color: #00a884; border: 1px solid #00a884; }
-        .Offline { background: rgba(234, 0, 56, 0.2); color: #ea0038; border: 1px solid #ea0038; }
-        button { width: 100%; padding: 15px; margin-top: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .start { background: #00a884; color: white; }
-        .stop { background: #ea0038; color: white; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0ebf8; padding: 20px; color: #202124; line-height: 1.6; }
+        .container { max-width: 640px; margin: auto; }
+        
+        /* Form Cards */
+        .form-card { background: white; border-radius: 8px; padding: 24px; margin-bottom: 12px; border: 1px solid #dadce0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .header-card { border-top: 10px solid #005a9c; }
+        
+        h1 { font-size: 32px; margin: 0 0 10px 0; color: #202124; }
+        .sub-text { color: #5f6368; font-size: 14px; margin-bottom: 5px; }
+        
+        /* Question Styling */
+        .question-block { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .question-text { font-weight: 500; font-size: 16px; margin-bottom: 12px; display: block; }
+        
+        /* Input Styling */
+        .email-input { width: 100%; border: none; border-bottom: 1px solid #dadce0; padding: 10px 0; font-size: 14px; outline: none; margin-top: 10px; }
+        .email-input:focus { border-bottom: 2px solid #005a9c; }
+        
+        .option { display: flex; align-items: center; margin: 12px 0; cursor: pointer; font-size: 14px; padding: 8px; border-radius: 4px; transition: background 0.2s; }
+        .option:hover { background-color: #f8f9fa; }
+        .option input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
+        
+        .required-star { color: #d93025; }
+        
+        /* Button */
+        .submit-btn { background-color: #005a9c; color: white; padding: 16px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; margin-top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .submit-btn:hover { background-color: #004070; }
     </style>
 </head>
 <body>
-    <div class="panel">
-        <h1 style="color: #00a884">Cypher-X</h1>
-        <div id="st" class="status Offline">Status: Offline</div>
-        <button class="start" onclick="run('start')">START DEPLOYMENT</button>
-        <button class="stop" onclick="run('stop')">TERMINATE</button>
+
+<div class="container">
+    <div class="form-card header-card">
+        <h1>Mr. Yawson</h1>
+        <p class="sub-text">Government and Citizenship Assessment</p>
+        <p class="sub-text">Valley View University Research Study</p>
+        <p style="font-size: 13px; color: #d93025; margin-top: 15px;">* Required</p>
     </div>
-    <script>
-        async function up() {
-            const r = await fetch('/api/status');
-            const d = await r.json();
-            const s = document.getElementById('st');
-            s.innerText = "Status: " + d[0].status;
-            s.className = "status " + d[0].status;
+
+    <form id="quizForm">
+        <div class="form-card">
+            <label class="question-text">Email Address <span class="required-star">*</span></label>
+            <input type="email" id="email" class="email-input" placeholder="Enter your email address" required>
+        </div>
+
+        <div class="form-card">
+            <div class="question-block">
+                <label class="question-text">1. What is the main role of government? <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q1" value="a" required> a) To make laws</label>
+                <label class="option"><input type="radio" name="q1" value="b"> b) To provide services</label>
+                <label class="option"><input type="radio" name="q1" value="c"> c) To protect citizens</label>
+                <label class="option"><input type="radio" name="q1" value="d"> d) All of the above</label>
+            </div>
+
+            <div class="question-block">
+                <label class="question-text">2. Ghana is a: <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q2" value="a" required> a) Monarchy</label>
+                <label class="option"><input type="radio" name="q2" value="b"> b) Democracy</label>
+                <label class="option"><input type="radio" name="q2" value="c"> c) Dictatorship</label>
+                <label class="option"><input type="radio" name="q2" value="d"> d) Oligarchy</label>
+            </div>
+
+            <div class="question-block">
+                <label class="question-text">3. The head of government in Ghana is the: <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q3" value="a" required> a) President</label>
+                <label class="option"><input type="radio" name="q3" value="b"> b) Prime Minister</label>
+                <label class="option"><input type="radio" name="q3" value="c"> c) King</label>
+                <label class="option"><input type="radio" name="q3" value="d"> d) Chief Justice</label>
+            </div>
+
+            <div class="question-block">
+                <label class="question-text">4. What is the law-making body in Ghana? <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q4" value="a" required> a) Parliament</label>
+                <label class="option"><input type="radio" name="q4" value="b"> b) Judiciary</label>
+                <label class="option"><input type="radio" name="q4" value="c"> c) Executive</label>
+                <label class="option"><input type="radio" name="q4" value="d"> d) Council of State</label>
+            </div>
+
+            <div class="question-block">
+                <label class="question-text">5. Who is the head of the Judiciary in Ghana? <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q5" value="a" required> a) President</label>
+                <label class="option"><input type="radio" name="q5" value="b"> b) Chief Justice</label>
+                <label class="option"><input type="radio" name="q5" value="c"> c) Speaker</label>
+                <label class="option"><input type="radio" name="q5" value="d"> d) Attorney-General</label>
+            </div>
+
+            <div class="question-block">
+                <label class="question-text">6. What is the main function of the police? <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q6" value="a" required> a) To make laws</label>
+                <label class="option"><input type="radio" name="q6" value="b"> b) To enforce laws</label>
+                <label class="option"><input type="radio" name="q6" value="c"> c) To interpret laws</label>
+                <label class="option"><input type="radio" name="q6" value="d"> d) To punish offenders</label>
+            </div>
+
+            <div class="question-block">
+                <label class="question-text">7. What is citizenship? <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q7" value="a" required> a) A person's nationality</label>
+                <label class="option"><input type="radio" name="q7" value="b"> b) A person's residence</label>
+                <label class="option"><input type="radio" name="q7" value="c"> c) A person's job</label>
+                <label class="option"><input type="radio" name="q7" value="d"> d) A person's language</label>
+            </div>
+
+            <div class="question-block">
+                <label class="question-text">8. Who is a Ghanaian citizen by birth? <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q8" value="a" required> a) A person born in Ghana</label>
+                <label class="option"><input type="radio" name="q8" value="b"> b) A person born abroad to Ghanaian parents</label>
+                <label class="option"><input type="radio" name="q8" value="c"> c) A person who has lived in Ghana for 10 years</label>
+                <label class="option"><input type="radio" name="q8" value="d"> d) All of the above</label>
+            </div>
+
+            <div class="question-block">
+                <label class="question-text">9. What is the importance of voting? <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q9" value="a" required> a) To choose leaders</label>
+                <label class="option"><input type="radio" name="q9" value="b"> b) To make laws</label>
+                <label class="option"><input type="radio" name="q9" value="c"> c) To enforce laws</label>
+                <label class="option"><input type="radio" name="q9" value="d"> d) To punish offenders</label>
+            </div>
+
+            <div class="question-block">
+                <label class="question-text">10. Who is eligible to vote in Ghana? <span class="required-star">*</span></label>
+                <label class="option"><input type="radio" name="q10" value="a" required> a) All citizens</label>
+                <label class="option"><input type="radio" name="q10" value="b"> b) Citizens 18 years and above</label>
+                <label class="option"><input type="radio" name="q10" value="c"> c) Citizens with a degree</label>
+                <label class="option"><input type="radio" name="q10" value="d"> d) Citizens with a job</label>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit & Send to WhatsApp</button>
+    </form>
+</div>
+
+<script>
+    // Correct Answer Key
+    const correctAnswers = {
+        q1: 'd', q2: 'b', q3: 'a', q4: 'a', q5: 'b',
+        q6: 'b', q7: 'a', q8: 'd', q9: 'a', q10: 'b'
+    };
+
+    document.getElementById('quizForm').onsubmit = function(e) {
+        e.preventDefault();
+
+        // 1. Get Student Email
+        const email = document.getElementById('email').value;
+        
+        // 2. Mark the Quiz
+        let score = 0;
+        let breakdown = "";
+
+        for (let i = 1; i <= 10; i++) {
+            const selectedElement = document.querySelector(`input[name="q${i}"]:checked`);
+            const selectedValue = selectedElement ? selectedElement.value : "No Answer";
+            const isCorrect = selectedValue === correctAnswers[`q${i}`];
+            
+            if (isCorrect) score++;
+            
+            // Format for WhatsApp: ✅ or ❌
+            breakdown += `Q${i}: ${isCorrect ? '✅' : '❌'} (${selectedValue.toUpperCase()})\n`;
         }
-        async function run(a) {
-            await fetch('/api/' + a, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ name: 'Cypher-X' })});
-            setTimeout(up, 1000);
-        }
-        setInterval(up, 3000);
-        up();
-    </script>
+
+        // 3. Create the WhatsApp Message
+        let report = `*MR. YAWSON - QUIZ RESULTS*\n`;
+        report += `--------------------------\n`;
+        report += `*Email:* ${email}\n`;
+        report += `*Final Score:* ${score}/10\n\n`;
+        report += `*Detailed Breakdown:*\n${breakdown}`;
+
+        // 4. Send to your WhatsApp Number (0208333632)
+        const phoneNumber = "233208333632";
+        const encodedText = encodeURIComponent(report);
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedText}`;
+
+        // Open WhatsApp in a new tab
+        window.open(whatsappUrl, '_blank');
+    };
+</script>
+
 </body>
 </html>
-`;
-
-// --- API ROUTES ---
-app.get('/', (req, res) => res.send(HTML_DASHBOARD));
-
-app.get('/api/status', (req, res) => {
-    res.json(Object.keys(BOTS).map(n => ({ name: n, status: BOTS[n].status })));
-});
-
-app.post('/api/start', (req, res) => {
-    const bot = BOTS['Cypher-X'];
-    if (bot && !bot.process) {
-        const botPath = path.join(__dirname, 'bots', bot.folder);
-        const child = spawn('node', [path.join(botPath, bot.file)], {
-            cwd: botPath,
-            env: { ...process.env, SESSION_ID: SESSION_DATA }
-        });
-        bot.process = child;
-        bot.status = 'Online';
-        child.stdout.on('data', d => console.log(\`[BOT]: \${d}\`));
-        child.on('close', () => { bot.process = null; bot.status = 'Offline'; });
-        res.json({ status: 'OK' });
-    }
-});
-
-app.post('/api/stop', (req, res) => {
-    if (BOTS['Cypher-X'].process) {
-        BOTS['Cypher-X'].process.kill();
-        res.json({ status: 'Stopped' });
-    }
-});
-
-app.listen(3000, () => console.log('OPEN BROWSER TO: http://localhost:3000'));
