@@ -3,200 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mr. Yawson - Assessment</title>
+    <title>Rise of the KMS - Animation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0ebf8; padding: 20px; color: #202124; line-height: 1.6; }
-        .container { max-width: 640px; margin: auto; }
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Arial', sans-serif; }
+        #screen { width: 100vw; height: 100vh; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(#1e3c72, #2a5298); }
         
-        /* Form Cards */
-        .form-card { background: white; border-radius: 8px; padding: 24px; margin-bottom: 12px; border: 1px solid #dadce0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .header-card { border-top: 10px solid #005a9c; }
+        /* Characters */
+        .character { position: absolute; bottom: -100px; width: 200px; height: 300px; display: flex; flex-direction: column; align-items: center; opacity: 0; }
+        .char-body { width: 100px; height: 150px; border-radius: 20px; background: #ffcc33; border: 4px solid #fff; position: relative; }
+        .char-name { color: white; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px; margin-top: 10px; font-weight: bold; }
         
-        h1 { font-size: 32px; margin: 0 0 10px 0; color: #202124; }
-        .sub-text { color: #5f6368; font-size: 14px; margin-bottom: 5px; }
-        
-        /* Question Styling */
-        .question-block { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .question-text { font-weight: 500; font-size: 16px; margin-bottom: 12px; display: block; }
-        
-        /* Input Styling */
-        .email-input { width: 100%; border: none; border-bottom: 1px solid #dadce0; padding: 10px 0; font-size: 14px; outline: none; margin-top: 10px; transition: border-color 0.3s; }
-        .email-input:focus { border-bottom: 2px solid #005a9c; }
-        .email-input.invalid { border-bottom: 2px solid #d93025; }
-        
-        .error-msg { color: #d93025; font-size: 12px; margin-top: 8px; display: none; font-weight: bold; }
-        
-        .option { display: flex; align-items: center; margin: 12px 0; cursor: pointer; font-size: 14px; padding: 8px; border-radius: 4px; transition: background 0.2s; }
-        .option:hover { background-color: #f8f9fa; }
-        .option input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
-        
-        .required-star { color: #d93025; }
-        
-        /* Button */
-        .submit-btn { background-color: #005a9c; color: white; padding: 16px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; margin-top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-        .submit-btn:hover { background-color: #004070; }
+        /* Narrator/Dialogue Box */
+        #ui-box { position: absolute; bottom: 30px; width: 80%; background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 15px; border: 5px solid #005a9c; min-height: 80px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        #text-content { font-size: 20px; color: #333; line-height: 1.4; }
+        #title-card { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: gold; font-size: 60px; text-shadow: 4px 4px #000; text-align: center; opacity: 0; }
+
+        #start-btn { padding: 20px 40px; font-size: 24px; cursor: pointer; background: gold; border: none; border-radius: 10px; font-weight: bold; z-index: 100; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="form-card header-card">
-        <h1>Mr. Yawson</h1>
-        <p class="sub-text">Government and Citizenship Assessment</p>
-        <p class="sub-text">Valley View University Research Study</p>
-        <p style="font-size: 13px; color: #d93025; margin-top: 15px;">* Required</p>
+<div id="screen">
+    <button id="start-btn">🎬 START ANIMATION</button>
+    
+    <div id="title-card">RISE OF THE KMS</div>
+
+    <div id="jayden" class="character"><div class="char-body" style="background: #4a90e2;"></div><div class="char-name">Jayden</div></div>
+    <div id="kms-squad" class="character"><div class="char-body" style="background: #f5a623;"></div><div class="char-name">KMS Squad</div></div>
+    <div id="rivals" class="character"><div class="char-body" style="background: #d0021b;"></div><div class="char-name">Rivals</div></div>
+
+    <div id="ui-box" style="display: none;">
+        <div id="text-content"></div>
     </div>
-
-    <form id="quizForm">
-        <div class="form-card">
-            <label class="question-text">Email Address <span class="required-star">*</span></label>
-            <input type="email" id="email" class="email-input" placeholder="e.g. student@gmail.com" required>
-            <div id="emailError" class="error-msg">⚠️ Please enter a valid and real email address.</div>
-        </div>
-
-        <div class="form-card">
-            <div class="question-block">
-                <label class="question-text">1. What is the main role of government? <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q1" value="a" required> a) To make laws</label>
-                <label class="option"><input type="radio" name="q1" value="b"> b) To provide services</label>
-                <label class="option"><input type="radio" name="q1" value="c"> c) To protect citizens</label>
-                <label class="option"><input type="radio" name="q1" value="d"> d) All of the above</label>
-            </div>
-
-            <div class="question-block">
-                <label class="question-text">2. Ghana is a: <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q2" value="a" required> a) Monarchy</label>
-                <label class="option"><input type="radio" name="q2" value="b"> b) Democracy</label>
-                <label class="option"><input type="radio" name="q2" value="c"> c) Dictatorship</label>
-                <label class="option"><input type="radio" name="q2" value="d"> d) Oligarchy</label>
-            </div>
-
-            <div class="question-block">
-                <label class="question-text">3. The head of government in Ghana is the: <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q3" value="a" required> a) President</label>
-                <label class="option"><input type="radio" name="q3" value="b"> b) Prime Minister</label>
-                <label class="option"><input type="radio" name="q3" value="c"> c) King</label>
-                <label class="option"><input type="radio" name="q3" value="d"> d) Chief Justice</label>
-            </div>
-
-            <div class="question-block">
-                <label class="question-text">4. What is the law-making body in Ghana? <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q4" value="a" required> a) Parliament</label>
-                <label class="option"><input type="radio" name="q4" value="b"> b) Judiciary</label>
-                <label class="option"><input type="radio" name="q4" value="c"> c) Executive</label>
-                <label class="option"><input type="radio" name="q4" value="d"> d) Council of State</label>
-            </div>
-
-            <div class="question-block">
-                <label class="question-text">5. Who is the head of the Judiciary in Ghana? <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q5" value="a" required> a) President</label>
-                <label class="option"><input type="radio" name="q5" value="b"> b) Chief Justice</label>
-                <label class="option"><input type="radio" name="q5" value="c"> c) Speaker</label>
-                <label class="option"><input type="radio" name="q5" value="d"> d) Attorney-General</label>
-            </div>
-
-            <div class="question-block">
-                <label class="question-text">6. What is the main function of the police? <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q6" value="a" required> a) To make laws</label>
-                <label class="option"><input type="radio" name="q6" value="b"> b) To enforce laws</label>
-                <label class="option"><input type="radio" name="q6" value="c"> c) To interpret laws</label>
-                <label class="option"><input type="radio" name="q6" value="d"> d) To punish offenders</label>
-            </div>
-
-            <div class="question-block">
-                <label class="question-text">7. What is citizenship? <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q7" value="a" required> a) A person's nationality</label>
-                <label class="option"><input type="radio" name="q7" value="b"> b) A person's residence</label>
-                <label class="option"><input type="radio" name="q7" value="c"> c) A person's job</label>
-                <label class="option"><input type="radio" name="q7" value="d"> d) A person's language</label>
-            </div>
-
-            <div class="question-block">
-                <label class="question-text">8. Who is a Ghanaian citizen by birth? <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q8" value="a" required> a) A person born in Ghana</label>
-                <label class="option"><input type="radio" name="q8" value="b"> b) A person born abroad to Ghanaian parents</label>
-                <label class="option"><input type="radio" name="q8" value="c"> c) A person who has lived in Ghana for 10 years</label>
-                <label class="option"><input type="radio" name="q8" value="d"> d) All of the above</label>
-            </div>
-
-            <div class="question-block">
-                <label class="question-text">9. What is the importance of voting? <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q9" value="a" required> a) To choose leaders</label>
-                <label class="option"><input type="radio" name="q9" value="b"> b) To make laws</label>
-                <label class="option"><input type="radio" name="q9" value="c"> c) To enforce laws</label>
-                <label class="option"><input type="radio" name="q9" value="d"> d) To punish offenders</label>
-            </div>
-
-            <div class="question-block">
-                <label class="question-text">10. Who is eligible to vote in Ghana? <span class="required-star">*</span></label>
-                <label class="option"><input type="radio" name="q10" value="a" required> a) All citizens</label>
-                <label class="option"><input type="radio" name="q10" value="b"> b) Citizens 18 years and above</label>
-                <label class="option"><input type="radio" name="q10" value="c"> c) Citizens with a degree</label>
-                <label class="option"><input type="radio" name="q10" value="d"> d) Citizens with a job</label>
-            </div>
-        </div>
-
-        <button type="submit" class="submit-btn">Submit & Send to WhatsApp</button>
-    </form>
 </div>
 
 <script>
-    // Correct Answer Key
-    const correctAnswers = {
-        q1: 'd', q2: 'b', q3: 'a', q4: 'a', q5: 'b',
-        q6: 'b', q7: 'a', q8: 'd', q9: 'a', q10: 'b'
-    };
+    const textElement = document.getElementById('text-content');
+    const startBtn = document.getElementById('start-btn');
 
-    document.getElementById('quizForm').onsubmit = function(e) {
-        e.preventDefault();
+    const scenes = [
+        { text: "In the heart of Accra, there stood a group of young dreamers… brave, bold, and full of purpose.", action: "title" },
+        { text: "They were more than friends — they were the Kingsridge Motivational Squad… KMS.", action: "show_kms" },
+        { text: "A quiet student named Jayden struggles with self-confidence at Kingsridge School.", action: "show_jayden" },
+        { text: "He feels invisible until Kwame, Afia, Malik, and Sena reach out to him.", action: "kms_joins" },
+        { text: "They introduce him to KMS — a group that inspires, motivates, and lifts others up.", action: "talk" },
+        { text: "Their motto: 'One voice, one goal — to lift others as we rise.'", action: "talk" },
+        { text: "But then... a rival group begins mocking them, calling them 'too soft'.", action: "rivals" },
+        { text: "Jayden wants to quit... but his teacher says: 'Leaders are not always loud. They are consistent.'", action: "teacher" },
+        { text: "KMS decides to host the biggest event of the term — 'Day of Change.'", action: "finale" }
+    ];
 
-        // 1. Email Verification Logic
-        const emailInput = document.getElementById('email');
-        const emailValue = emailInput.value.trim();
-        const emailError = document.getElementById('emailError');
-        
-        // Regex for standard email format: letters@letters.extension
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    function speak(text, callback) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.rate = 0.9;
+        msg.pitch = 1;
+        msg.onend = callback;
+        window.speechSynthesis.speak(msg);
+    }
 
-        if (!emailRegex.test(emailValue)) {
-            emailError.style.display = "block";
-            emailInput.classList.add('invalid');
-            emailInput.focus();
-            return; // STOP everything if email is wrong
-        } else {
-            emailError.style.display = "none";
-            emailInput.classList.remove('invalid');
+    async function playScene(index) {
+        if (index >= scenes.length) {
+            textElement.innerText = "The Story Continues...";
+            return;
         }
 
-        // 2. Mark the Quiz
-        let score = 0;
-        let breakdown = "";
+        const scene = scenes[index];
+        textElement.innerText = scene.text;
 
-        for (let i = 1; i <= 10; i++) {
-            const selectedElement = document.querySelector(`input[name="q${i}"]:checked`);
-            const selectedValue = selectedElement ? selectedElement.value : "No Answer";
-            const isCorrect = selectedValue === correctAnswers[`q${i}`];
-            
-            if (isCorrect) score++;
-            
-            breakdown += `Q${i}: ${isCorrect ? '✅' : '❌'} (${selectedValue.toUpperCase()})\n`;
+        // Animation Logic
+        if (scene.action === "title") {
+            gsap.to("#title-card", { opacity: 1, duration: 1, yoyo: true, repeat: 1 });
+        } else if (scene.action === "show_jayden") {
+            gsap.to("#jayden", { opacity: 1, bottom: "150px", duration: 1 });
+        } else if (scene.action === "kms_joins") {
+            gsap.to("#kms-squad", { opacity: 1, bottom: "150px", left: "20%", duration: 1 });
+            gsap.to("#jayden", { left: "60%", duration: 1 });
+        } else if (scene.action === "rivals") {
+            gsap.to("#rivals", { opacity: 1, bottom: "150px", left: "40%", duration: 0.5 });
+            gsap.to("#screen", { background: "#330000", duration: 0.5 });
+        } else if (scene.action === "finale") {
+            gsap.to(".character", { scale: 1.2, duration: 1 });
+            gsap.to("#screen", { background: "linear-gradient(#f8ff00, #f15031)", duration: 1 });
         }
 
-        // 3. Create the WhatsApp Message
-        let report = `*MR. YAWSON - QUIZ RESULTS*\n`;
-        report += `--------------------------\n`;
-        report += `*Email:* ${emailValue}\n`;
-        report += `*Final Score:* ${score}/10\n\n`;
-        report += `*Detailed Breakdown:*\n${breakdown}`;
+        speak(scene.text, () => {
+            setTimeout(() => playScene(index + 1), 1000);
+        });
+    }
 
-        // 4. Send to WhatsApp (0208333632)
-        const phoneNumber = "233208333632";
-        const encodedText = encodeURIComponent(report);
-        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedText}`;
-
-        window.open(whatsappUrl, '_blank');
-    };
+    startBtn.addEventListener('click', () => {
+        startBtn.style.display = 'none';
+        document.getElementById('ui-box').style.display = 'block';
+        playScene(0);
+    });
 </script>
 
 </body>
-</html>	
+</html>
