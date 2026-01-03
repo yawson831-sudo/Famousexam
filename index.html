@@ -20,8 +20,11 @@
         .question-text { font-weight: 500; font-size: 16px; margin-bottom: 12px; display: block; }
         
         /* Input Styling */
-        .email-input { width: 100%; border: none; border-bottom: 1px solid #dadce0; padding: 10px 0; font-size: 14px; outline: none; margin-top: 10px; }
+        .email-input { width: 100%; border: none; border-bottom: 1px solid #dadce0; padding: 10px 0; font-size: 14px; outline: none; margin-top: 10px; transition: border-color 0.3s; }
         .email-input:focus { border-bottom: 2px solid #005a9c; }
+        .email-input.invalid { border-bottom: 2px solid #d93025; }
+        
+        .error-msg { color: #d93025; font-size: 12px; margin-top: 8px; display: none; font-weight: bold; }
         
         .option { display: flex; align-items: center; margin: 12px 0; cursor: pointer; font-size: 14px; padding: 8px; border-radius: 4px; transition: background 0.2s; }
         .option:hover { background-color: #f8f9fa; }
@@ -47,7 +50,8 @@
     <form id="quizForm">
         <div class="form-card">
             <label class="question-text">Email Address <span class="required-star">*</span></label>
-            <input type="email" id="email" class="email-input" placeholder="Enter your email address" required>
+            <input type="email" id="email" class="email-input" placeholder="e.g. student@gmail.com" required>
+            <div id="emailError" class="error-msg">⚠️ Please enter a valid and real email address.</div>
         </div>
 
         <div class="form-card">
@@ -146,9 +150,24 @@
     document.getElementById('quizForm').onsubmit = function(e) {
         e.preventDefault();
 
-        // 1. Get Student Email
-        const email = document.getElementById('email').value;
+        // 1. Email Verification Logic
+        const emailInput = document.getElementById('email');
+        const emailValue = emailInput.value.trim();
+        const emailError = document.getElementById('emailError');
         
+        // Regex for standard email format: letters@letters.extension
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailRegex.test(emailValue)) {
+            emailError.style.display = "block";
+            emailInput.classList.add('invalid');
+            emailInput.focus();
+            return; // STOP everything if email is wrong
+        } else {
+            emailError.style.display = "none";
+            emailInput.classList.remove('invalid');
+        }
+
         // 2. Mark the Quiz
         let score = 0;
         let breakdown = "";
@@ -160,26 +179,24 @@
             
             if (isCorrect) score++;
             
-            // Format for WhatsApp: ✅ or ❌
             breakdown += `Q${i}: ${isCorrect ? '✅' : '❌'} (${selectedValue.toUpperCase()})\n`;
         }
 
         // 3. Create the WhatsApp Message
         let report = `*MR. YAWSON - QUIZ RESULTS*\n`;
         report += `--------------------------\n`;
-        report += `*Email:* ${email}\n`;
+        report += `*Email:* ${emailValue}\n`;
         report += `*Final Score:* ${score}/10\n\n`;
         report += `*Detailed Breakdown:*\n${breakdown}`;
 
-        // 4. Send to your WhatsApp Number (0208333632)
+        // 4. Send to WhatsApp (0208333632)
         const phoneNumber = "233208333632";
         const encodedText = encodeURIComponent(report);
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedText}`;
 
-        // Open WhatsApp in a new tab
         window.open(whatsappUrl, '_blank');
     };
 </script>
 
 </body>
-</html>
+</html>	
