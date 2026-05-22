@@ -176,13 +176,33 @@ header{
 .bottom-nav{
     position:fixed;
     bottom:0;
+    left:0;
     width:100%;
     background:white;
     display:flex;
     justify-content:space-around;
+    align-items:center;
     padding:12px 0;
-    box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+    box-shadow:0 -2px 15px rgba(0,0,0,0.08);
+    border-top-left-radius:20px;
+    border-top-right-radius:20px;
 }
+
+.nav-item{
+    text-align:center;
+    color:#64748b;
+    font-size:13px;
+    font-weight:500;
+}
+
+.nav-item div{
+    font-size:24px;
+    margin-bottom:4px;
+}
+
+.nav-item.active{
+    color:#f97316;
+        }
 
 .nav-item{
     text-align:center;
