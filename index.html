@@ -5,611 +5,345 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Famous Seller</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
 
 body{
-background:#0b1120;
-color:white;
-padding-bottom:90px;
+    background:#f1f5f9;
 }
 
-/* TOPBAR */
+header{
+    background:#ffffff;
+    padding:15px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
 
 .topbar{
-background:#111827;
-padding:18px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-position:sticky;
-top:0;
-z-index:100;
-box-shadow:0 0 15px rgba(0,0,0,0.5);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-.brand{
-display:flex;
-align-items:center;
-gap:10px;
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#f97316;
 }
 
-.brand i{
-font-size:28px;
-color:lime;
+.icons{
+    font-size:24px;
 }
 
-.brand h1{
-font-size:22px;
+.search-box{
+    margin-top:15px;
+    display:flex;
+    gap:10px;
 }
 
-.avatar{
-width:45px;
-height:45px;
-border-radius:50%;
-border:2px solid lime;
+.search-box input{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#e2e8f0;
+    font-size:16px;
 }
 
-/* SEARCH */
-
-.search{
-padding:15px;
+.search-box button{
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#f97316;
+    color:white;
+    font-weight:bold;
 }
 
-.search input{
-width:100%;
-padding:14px;
-border:none;
-outline:none;
-border-radius:15px;
-background:#1e293b;
-color:white;
-font-size:15px;
+.banner{
+    margin:15px;
+    background:linear-gradient(135deg,#f97316,#fb923c);
+    color:white;
+    padding:25px;
+    border-radius:20px;
 }
 
-/* BALANCE */
-
-.balance-card{
-margin:15px;
-padding:25px;
-border-radius:25px;
-background:linear-gradient(135deg,#16a34a,#22c55e);
-box-shadow:0 0 25px rgba(0,255,120,0.3);
+.banner h1{
+    font-size:30px;
 }
 
-.balance-card h2{
-font-size:16px;
-margin-bottom:10px;
+.banner p{
+    margin-top:10px;
 }
 
-.balance-card h1{
-font-size:42px;
-margin-bottom:20px;
+.categories{
+    display:flex;
+    overflow-x:auto;
+    padding:10px;
+    gap:15px;
 }
 
-.action-buttons{
-display:flex;
-gap:12px;
+.category{
+    min-width:90px;
+    background:white;
+    border-radius:15px;
+    text-align:center;
+    padding:15px 10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.08);
 }
 
-.action-buttons button{
-flex:1;
-padding:14px;
-border:none;
-border-radius:15px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
+.category div{
+    font-size:28px;
+    margin-bottom:8px;
 }
-
-.deposit{
-background:white;
-color:black;
-}
-
-.withdraw{
-background:black;
-color:white;
-}
-
-/* MARKET */
 
 .section-title{
-padding:0 15px;
-margin-top:20px;
-font-size:22px;
-font-weight:bold;
+    padding:15px;
+    font-size:24px;
+    font-weight:bold;
 }
 
-.market-card{
-margin:15px;
-padding:20px;
-border-radius:22px;
-background:#1e293b;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 0 12px rgba(0,0,0,0.4);
+.products{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    padding:15px;
 }
 
-.market-left h2{
-font-size:22px;
-margin-bottom:5px;
+.product-card{
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 0 10px rgba(0,0,0,0.08);
+    transition:0.3s;
 }
 
-.market-left p{
-color:#94a3b8;
+.product-card:hover{
+    transform:scale(1.02);
+}
+
+.product-image{
+    height:150px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:60px;
+    background:#e2e8f0;
+}
+
+.product-details{
+    padding:12px;
+}
+
+.product-name{
+    font-size:18px;
+    font-weight:bold;
 }
 
 .price{
-font-size:30px;
-font-weight:bold;
+    margin-top:8px;
+    color:#f97316;
+    font-size:20px;
+    font-weight:bold;
 }
 
-.green{
-color:lime;
+.old-price{
+    text-decoration:line-through;
+    color:gray;
+    font-size:14px;
 }
 
-.red{
-color:red;
+.buy-btn{
+    width:100%;
+    margin-top:12px;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#16a34a;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
 }
-
-.trade-buttons{
-display:flex;
-gap:15px;
-padding:0 15px;
-}
-
-.trade-buttons button{
-flex:1;
-padding:15px;
-border:none;
-border-radius:16px;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
-
-.buy{
-background:limegreen;
-color:white;
-}
-
-.sell{
-background:crimson;
-color:white;
-}
-
-.trade-buttons button:hover{
-transform:scale(1.03);
-}
-
-/* STATS */
-
-.stats{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
-padding:15px;
-}
-
-.stat-box{
-background:#1e293b;
-padding:20px;
-border-radius:20px;
-text-align:center;
-}
-
-.stat-box h3{
-margin-bottom:8px;
-}
-
-.stat-box p{
-font-size:20px;
-font-weight:bold;
-color:lime;
-}
-
-/* COINS */
-
-.coin-list{
-padding:15px;
-}
-
-.coin{
-background:#1e293b;
-padding:18px;
-border-radius:18px;
-margin-bottom:15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.coin-left{
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.coin-left i{
-font-size:24px;
-}
-
-.coin-price{
-font-weight:bold;
-}
-
-/* PORTFOLIO */
-
-.portfolio{
-margin:15px;
-padding:20px;
-background:#1e293b;
-border-radius:20px;
-}
-
-.portfolio-item{
-display:flex;
-justify-content:space-between;
-padding:12px 0;
-border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-/* HISTORY */
-
-.history{
-margin:15px;
-padding:20px;
-border-radius:20px;
-background:#1e293b;
-}
-
-.trade-history{
-background:#334155;
-padding:12px;
-border-radius:12px;
-margin-top:10px;
-}
-
-/* ONLINE */
-
-.online{
-margin:15px;
-padding:15px;
-background:#1e293b;
-border-radius:15px;
-text-align:center;
-font-weight:bold;
-color:lime;
-}
-
-/* NAVIGATION */
 
 .bottom-nav{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-background:#111827;
-display:flex;
-justify-content:space-around;
-padding:12px 0;
-border-top:1px solid #334155;
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:white;
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0;
+    box-shadow:0 -2px 10px rgba(0,0,0,0.1);
 }
 
 .nav-item{
-text-align:center;
-font-size:20px;
-color:gray;
+    text-align:center;
+    font-size:13px;
 }
 
-.nav-item p{
-font-size:12px;
-margin-top:4px;
+.nav-item div{
+    font-size:24px;
 }
 
-.active{
-color:lime;
-}
-
-/* LOADER */
-
-#loader{
-position:fixed;
-width:100%;
-height:100%;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:30px;
-font-weight:bold;
-color:lime;
-z-index:9999;
+.space{
+    height:90px;
 }
 
 </style>
 </head>
-
 <body>
 
-<div id="loader">
-💹 FAMOUS SELLER
-</div>
-
-<!-- TOPBAR -->
+<header>
 
 <div class="topbar">
-
-<div class="brand">
-<i class="fa-solid fa-chart-line"></i>
-<h1>Famous Seller</h1>
+    <div class="logo">🛒 Famous Seller</div>
+    <div class="icons">🛍️</div>
 </div>
 
-<img src="https://i.pravatar.cc/100" class="avatar">
-
+<div class="search-box">
+    <input type="text" placeholder="Search products...">
+    <button>Search</button>
 </div>
 
-<!-- SEARCH -->
+</header>
 
-<div class="search">
-<input type="text" placeholder="Search Bitcoin, Ethereum...">
+<div class="banner">
+    <h1>Biggest Online Marketplace 🔥</h1>
+    <p>Buy phones, fashion, shoes, electronics and more.</p>
 </div>
 
-<!-- BALANCE -->
+<div class="categories">
 
-<div class="balance-card">
-<h2>Total Balance</h2>
-<h1>$<span id="balance">5000</span></h1>
-
-<div class="action-buttons">
-<button class="deposit">Deposit</button>
-<button class="withdraw">Withdraw</button>
-</div>
+<div class="category">
+<div>📱</div>
+Phones
 </div>
 
-<!-- ONLINE -->
-
-<div class="online">
-👥 12,532 Traders Online
+<div class="category">
+<div>👟</div>
+Shoes
 </div>
 
-<!-- MARKET -->
-
-<div class="section-title">
-Trending Market 🔥
+<div class="category">
+<div>⌚</div>
+Watches
 </div>
 
-<div class="market-card">
-
-<div class="market-left">
-<h2>₿ Bitcoin</h2>
-<p>BTC / USD</p>
+<div class="category">
+<div>💻</div>
+Laptops
 </div>
 
-<div class="price green" id="price">
-$50000
+<div class="category">
+<div>🎧</div>
+Audio
+</div>
+
+<div class="category">
+<div>👕</div>
+Fashion
 </div>
 
 </div>
 
-<!-- TRADE BUTTONS -->
+<div class="section-title">Trending Products</div>
 
-<div class="trade-buttons">
-<button class="buy" onclick="buyTrade()">BUY</button>
-<button class="sell" onclick="sellTrade()">SELL</button>
+<div class="products">
+
+<div class="product-card">
+<div class="product-image">📱</div>
+<div class="product-details">
+<div class="product-name">iPhone 15 Pro</div>
+<div class="price">$999</div>
+<div class="old-price">$1200</div>
+<button class="buy-btn">Add To Cart</button>
 </div>
-
-<!-- STATS -->
-
-<div class="stats">
-
-<div class="stat-box">
-<h3>Profit</h3>
-<p>$1,245</p>
 </div>
 
-<div class="stat-box">
-<h3>Trades</h3>
-<p>128</p>
+<div class="product-card">
+<div class="product-image">👟</div>
+<div class="product-details">
+<div class="product-name">Nike Sneakers</div>
+<div class="price">$120</div>
+<div class="old-price">$180</div>
+<button class="buy-btn">Add To Cart</button>
+</div>
 </div>
 
+<div class="product-card">
+<div class="product-image">⌚</div>
+<div class="product-details">
+<div class="product-name">Smart Watch</div>
+<div class="price">$80</div>
+<div class="old-price">$120</div>
+<button class="buy-btn">Add To Cart</button>
+</div>
 </div>
 
-<!-- COINS -->
-
-<div class="section-title">
-Top Coins 🚀
+<div class="product-card">
+<div class="product-image">💻</div>
+<div class="product-details">
+<div class="product-name">Gaming Laptop</div>
+<div class="price">$1400</div>
+<div class="old-price">$1700</div>
+<button class="buy-btn">Add To Cart</button>
 </div>
-
-<div class="coin-list">
-
-<div class="coin">
-<div class="coin-left">
-<i class="fa-brands fa-bitcoin"></i>
-<div>
-<h3>Bitcoin</h3>
-<small>BTC</small>
-</div>
-</div>
-<div class="coin-price">$50,000</div>
 </div>
 
-<div class="coin">
-<div class="coin-left">
-<i class="fa-brands fa-ethereum"></i>
-<div>
-<h3>Ethereum</h3>
-<small>ETH</small>
+<div class="product-card">
+<div class="product-image">🎧</div>
+<div class="product-details">
+<div class="product-name">AirPods Max</div>
+<div class="price">$250</div>
+<div class="old-price">$300</div>
+<button class="buy-btn">Add To Cart</button>
 </div>
-</div>
-<div class="coin-price">$3,000</div>
 </div>
 
-<div class="coin">
-<div class="coin-left">
-<i class="fa-solid fa-bolt"></i>
-<div>
-<h3>Solana</h3>
-<small>SOL</small>
+<div class="product-card">
+<div class="product-image">👕</div>
+<div class="product-details">
+<div class="product-name">Fashion Hoodie</div>
+<div class="price">$40</div>
+<div class="old-price">$60</div>
+<button class="buy-btn">Add To Cart</button>
 </div>
-</div>
-<div class="coin-price">$145</div>
-</div>
-
-<div class="coin">
-<div class="coin-left">
-<i class="fa-solid fa-dog"></i>
-<div>
-<h3>Dogecoin</h3>
-<small>DOGE</small>
-</div>
-</div>
-<div class="coin-price">$0.25</div>
 </div>
 
 </div>
 
-<!-- PORTFOLIO -->
-
-<div class="portfolio">
-<h2>Your Portfolio</h2>
-
-<div class="portfolio-item">
-<span>Bitcoin</span>
-<span>0.054 BTC</span>
-</div>
-
-<div class="portfolio-item">
-<span>Ethereum</span>
-<span>2.5 ETH</span>
-</div>
-
-<div class="portfolio-item">
-<span>Solana</span>
-<span>15 SOL</span>
-</div>
-
-</div>
-
-<!-- HISTORY -->
-
-<div class="history">
-<h2>Trade History</h2>
-<div id="historyBox"></div>
-</div>
-
-<!-- NAV -->
+<div class="space"></div>
 
 <div class="bottom-nav">
 
-<div class="nav-item active">
-<i class="fa-solid fa-house"></i>
-<p>Home</p>
+<div class="nav-item">
+<div>🏠</div>
+Home
 </div>
 
 <div class="nav-item">
-<i class="fa-solid fa-chart-column"></i>
-<p>Markets</p>
+<div>🛒</div>
+Cart
 </div>
 
 <div class="nav-item">
-<i class="fa-solid fa-wallet"></i>
-<p>Wallet</p>
+<div>❤️</div>
+Wishlist
 </div>
 
 <div class="nav-item">
-<i class="fa-solid fa-user"></i>
-<p>Profile</p>
+<div>👤</div>
+Account
 </div>
 
 </div>
-
-<script>
-
-let balance = 5000;
-let price = 50000;
-
-function updatePrice(){
-
-let change = Math.floor(Math.random() * 1000 - 500);
-
-price += change;
-
-let priceTag = document.getElementById("price");
-
-priceTag.innerHTML = "$" + price;
-
-if(change >= 0){
-priceTag.className = "price green";
-}else{
-priceTag.className = "price red";
-}
-
-}
-
-setInterval(updatePrice,2000);
-
-function buyTrade(){
-
-balance -= 100;
-
-document.getElementById("balance").innerHTML = balance;
-
-addHistory("🟢 Bought BTC at $" + price);
-
-}
-
-function sellTrade(){
-
-balance += 100;
-
-document.getElementById("balance").innerHTML = balance;
-
-addHistory("🔴 Sold BTC at $" + price);
-
-}
-
-function addHistory(text){
-
-let div = document.createElement("div");
-
-div.className = "trade-history";
-
-div.innerHTML = text;
-
-document.getElementById("historyBox").prepend(div);
-
-}
-
-setTimeout(()=>{
-document.getElementById("loader").style.display = "none";
-},2500);
-
-setInterval(()=>{
-
-let random = [
-"📈 Bitcoin is pumping!",
-"🚀 Ethereum volume increased!",
-"🔥 Solana trend is bullish!",
-"💰 New traders joined Famous Seller!"
-];
-
-alert(random[Math.floor(Math.random()*random.length)]);
-
-},35000);
-
-</script>
 
 </body>
 </html>
